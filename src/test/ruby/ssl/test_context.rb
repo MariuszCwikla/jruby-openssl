@@ -184,10 +184,19 @@ class TestSSLContext < TestCase
     assert_equal [], diff
   end unless java7? # would need to filter out stuff such as ECDHE-RSA-AES128-GCM-SHA256
 
-  def test_set_ciphers
+  def test_set_ciphers_by_group_name
     context = OpenSSL::SSL::SSLContext.new
     context.ciphers = "AES"
-    puts context.ciphers.inspect
+
+    actual = context.ciphers.map { |cipher| cipher[0]}
+    puts actual
+  end
+
+  def test_set_ciphers_by_cipher_name
+    context = OpenSSL::SSL::SSLContext.new
+    context.ciphers = "ECDHE-ECDSA-AES128-GCM-SHA256"
+    actual = context.ciphers.map { |cipher| cipher[0]}
+    puts actual
   end
 
 end
