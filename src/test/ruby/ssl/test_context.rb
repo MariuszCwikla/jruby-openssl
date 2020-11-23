@@ -184,4 +184,10 @@ class TestSSLContext < TestCase
     assert_equal [], diff
   end unless java7? # would need to filter out stuff such as ECDHE-RSA-AES128-GCM-SHA256
 
+  def test_set_ciphers
+    context = OpenSSL::SSL::SSLContext.new
+    context.ciphers = "AES"
+    puts context.ciphers.inspect
+  end
+
 end

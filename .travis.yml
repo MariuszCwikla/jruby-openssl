@@ -56,11 +56,3 @@ matrix:
     - jdk: oraclejdk11
       rvm: jruby-9.2.12.0
       script: jruby -rbundler/setup -S rake integration:install integration:test
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#jruby"
-    on_success: change
-    template:
-      - "%{repository} (%{branch}:%{commit} by %{author}): %{message} (%{build_url})"
-    skip_join: true
