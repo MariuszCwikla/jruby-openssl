@@ -6095,7 +6095,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA", name = "ECDH-ECDSA-AES128-SHA");
 	    CipherNames.put(name, new Def(0, name, stdname, 0,
-            SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA256,
+            SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA1,
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 128, 128
@@ -6103,7 +6103,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA", name = "ECDH-ECDSA-AES256-SHA");
 	    CipherNames.put(name, new Def(1, name, stdname, 0,
-            SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA256, 
+            SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA1, 
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 256, 256
@@ -6128,7 +6128,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384",  name = "ECDH-ECDSA-AES256-GCM-SHA384");
         CipherNames.put(name, new Def(1, name, stdname, 0,
-                SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA256,
+                SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA384,
                 TLS1_VERSION, 0,
                 0, 0,
                 SSL_HIGH, DONT_KNOW, 256, 384
@@ -6136,7 +6136,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384",  name = "ECDH-ECDSA-AES256-SHA384");
 	    CipherNames.put(name, new Def(1, name, stdname, 0,
-            SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA256, 
+            SSL_kECDHE, SSL_aECDSA, SSL_AES, SSL_SHA384, 
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 256, 384
@@ -6144,7 +6144,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA", name = "ECDH-RSA-AES128-SHA");
         CipherNames.put(name, new Def(1, name, stdname, 0,
-            SSL_kECDHE, SSL_aRSA, SSL_AES, SSL_SHA256, 
+            SSL_kECDHE, SSL_aRSA, SSL_AES, SSL_SHA1, 
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 128, 128
@@ -6152,7 +6152,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_RSA_WITH_AES_256_CBC_SHA", name = "ECDH-RSA-AES256-SHA");
 	    CipherNames.put(name, new Def(0, name, stdname, 0,
-            SSL_kECDHE, SSL_aRSA, SSL_AES, SSL_SHA256, 
+            SSL_kECDHE, SSL_aRSA, SSL_AES, SSL_SHA1, 
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 256, 256
@@ -6160,7 +6160,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256", name = "ECDH-RSA-AES128-GCM-SHA256");
         CipherNames.put(name, new Def(0, name, stdname, 0,
-                SSL_kECDHE, SSL_aRSA, SSL_AES, SSL_SHA256,
+                SSL_kECDHE, SSL_aRSA, SSL_AES, SSL_SHA1,
                 TLS1_VERSION, 0,
                 0, 0,
                 SSL_HIGH, DONT_KNOW, 128, 256
@@ -6200,7 +6200,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_anon_WITH_AES_128_CBC_SHA", name = "AECDH-AES128-SHA");
         CipherNames.put(name, new Def(1, name, stdname, 0 /*???*/,
-            SSL_kECDHE, SSL_aNULL, SSL_AES, SSL_SHA256,
+            SSL_kECDHE, SSL_aNULL, SSL_AES, SSL_SHA1,
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 128, 128
@@ -6208,7 +6208,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_anon_WITH_AES_256_CBC_SHA", name = "AECDH-AES256-SHA");
 	    CipherNames.put(name, new Def(1, name, stdname, 0 /*???*/,
-            SSL_kECDHE, SSL_aNULL, SSL_AES, SSL_SHA256,
+            SSL_kECDHE, SSL_aNULL, SSL_AES, SSL_SHA1,
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 256, 256
@@ -6216,7 +6216,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA", name = "AECDH-DES-CBC3-SHA");
 	    CipherNames.put(name, new Def(1, name, stdname, 0 /*???*/,
-            SSL_kECDHE, SSL_aNULL, SSL_3DES, SSL_SHA256,
+            SSL_kECDHE, SSL_aNULL, SSL_3DES, SSL_SHA1,
             TLS1_VERSION, 0,
             0, 0,
             SSL_HIGH, DONT_KNOW, 168, 168
@@ -6224,7 +6224,7 @@ struct ssl_cipher_st {
 
         SuiteToOSSL.put(stdname = "TLS_ECDH_anon_WITH_RC4_128_SHA", name = "AECDH-RC4-SHA");
         CipherNames.put(name, new Def(1, name, stdname, 0 /*???*/,
-                SSL_kECDHE, SSL_aNULL, SSL_RC4, SSL_SHA256,
+                SSL_kECDHE, SSL_aNULL, SSL_RC4, SSL_SHA1,
                 TLS1_VERSION, 0,
                 0, 0,
             0, DONT_KNOW, 128, 128

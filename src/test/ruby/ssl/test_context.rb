@@ -194,6 +194,16 @@ class TestSSLContext < TestCase
     assert actual.include?("AES128-SHA")
   end
 
+  def test_set_ciphers_by_group_name2
+    context = OpenSSL::SSL::SSLContext.new
+    context.ciphers = "AES256"
+
+    actual = context.ciphers.map { |cipher| cipher[0]}
+    assert actual.include?("ECDHE-ECDSA-AES256-GCM-SHA384")
+    assert actual.include?("ECDHE-ECDSA-AES256-SHA")
+    assert actual.include?("AES256-SHA")
+  end
+
   def test_set_ciphers_by_cipher_name
     context = OpenSSL::SSL::SSLContext.new
     context.ciphers = "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384"
