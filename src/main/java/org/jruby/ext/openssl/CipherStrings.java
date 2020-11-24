@@ -38,6 +38,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.jruby.ext.openssl.SSL.SSL3_VERSION;
+import static org.jruby.ext.openssl.SSL.TLS1_VERSION;
+import static org.jruby.ext.openssl.SSL.TLS1_1_VERSION;
+import static org.jruby.ext.openssl.SSL.TLS1_2_VERSION;
+import static org.jruby.ext.openssl.SSL.TLS1_3_VERSION;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -58,22 +64,6 @@ public class CipherStrings {
     public final static String SSL2_TXT_RC4_64_WITH_MD5 = "RC4-64-MD5";
     public final static String SSL2_TXT_NULL = "NULL";
 
-    public final static String SSL3_TXT_RSA_NULL_MD5 = "NULL-MD5";
-    public final static String SSL3_TXT_RSA_NULL_SHA = "NULL-SHA";
-    public final static String SSL3_TXT_RSA_RC4_40_MD5 = "EXP-RC4-MD5";
-    public final static String SSL3_TXT_RSA_RC4_128_MD5 = "RC4-MD5";
-    public final static String SSL3_TXT_RSA_RC4_128_SHA = "RC4-SHA";
-    public final static String SSL3_TXT_RSA_RC2_40_MD5 = "EXP-RC2-CBC-MD5";
-    public final static String SSL3_TXT_RSA_IDEA_128_SHA = "IDEA-CBC-SHA";
-    public final static String SSL3_TXT_RSA_DES_40_CBC_SHA = "EXP-DES-CBC-SHA";
-    public final static String SSL3_TXT_RSA_DES_64_CBC_SHA = "DES-CBC-SHA";
-    public final static String SSL3_TXT_RSA_DES_192_CBC3_SHA = "DES-CBC3-SHA";
-    public final static String SSL3_TXT_DH_DSS_DES_40_CBC_SHA = "EXP-DH-DSS-DES-CBC-SHA";
-    public final static String SSL3_TXT_DH_DSS_DES_64_CBC_SHA = "DH-DSS-DES-CBC-SHA";
-    public final static String SSL3_TXT_DH_DSS_DES_192_CBC3_SHA = "DH-DSS-DES-CBC3-SHA";
-    public final static String SSL3_TXT_DH_RSA_DES_40_CBC_SHA = "EXP-DH-RSA-DES-CBC-SHA";
-    public final static String SSL3_TXT_DH_RSA_DES_64_CBC_SHA = "DH-RSA-DES-CBC-SHA";
-    public final static String SSL3_TXT_DH_RSA_DES_192_CBC3_SHA = "DH-RSA-DES-CBC3-SHA";
     public final static String SSL3_TXT_EDH_DSS_DES_40_CBC_SHA = "EXP-EDH-DSS-DES-CBC-SHA";
     public final static String SSL3_TXT_EDH_DSS_DES_64_CBC_SHA = "EDH-DSS-DES-CBC-SHA";
     public final static String SSL3_TXT_EDH_DSS_DES_192_CBC3_SHA = "EDH-DSS-DES-CBC3-SHA";
@@ -133,6 +123,7 @@ public class CipherStrings {
     public final static String SSL_TXT_LOW = "LOW";
     public final static String SSL_TXT_MEDIUM = "MEDIUM";
     public final static String SSL_TXT_HIGH = "HIGH";
+    public final static String SSL_TXT_FIPS = "FIPS";
     public final static String SSL_TXT_kFZA = "kFZA";
     public final static String SSL_TXT_aFZA = "aFZA";
     public final static String SSL_TXT_eFZA = "eFZA";
@@ -216,6 +207,14 @@ public class CipherStrings {
     public final static String SSL_TXT_MD5 = "MD5";
     public final static String SSL_TXT_SHA1 = "SHA1";
     public final static String SSL_TXT_SHA = "SHA";
+    public final static String SSL_TXT_GOST94          = "GOST94";
+    public final static String SSL_TXT_GOST89MAC       = "GOST89MAC";
+    public final static String SSL_TXT_GOST12          = "GOST12";
+    public final static String SSL_TXT_GOST89MAC12     = "GOST89MAC12";
+    public final static String SSL_TXT_SHA256          = "SHA256";
+    public final static String SSL_TXT_SHA384          = "SHA384";
+
+
     public final static String SSL_TXT_EXP = "EXP";
     public final static String SSL_TXT_EXPORT = "EXPORT";
     public final static String SSL_TXT_EXP40 = "EXPORT40";
@@ -223,6 +222,8 @@ public class CipherStrings {
     public final static String SSL_TXT_SSLV2 = "SSLv2";
     public final static String SSL_TXT_SSLV3 = "SSLv3";
     public final static String SSL_TXT_TLSV1 = "TLSv1";
+    public final static String SSL_TXT_TLSV1_1 = "TLSv1.1";
+    public final static String SSL_TXT_TLSV1_2 = "TLSv1.2";
     public final static String SSL_TXT_ALL = "ALL";
     public final static String SSL_TXT_ECC = "ECCdraft";
 
@@ -381,46 +382,44 @@ public class CipherStrings {
  * 
  * When adding new digest in the ssl_ciph.c and increment SSL_MD_NUM_IDX make
  * sure to update this constant too
- 
+*/ 
 
-# define SSL_MD_MD5_IDX  0
-# define SSL_MD_SHA1_IDX 1
-# define SSL_MD_GOST94_IDX 2
-# define SSL_MD_GOST89MAC_IDX 3
-# define SSL_MD_SHA256_IDX 4
-# define SSL_MD_SHA384_IDX 5
-# define SSL_MD_GOST12_256_IDX  6
-# define SSL_MD_GOST89MAC12_IDX 7
-# define SSL_MD_GOST12_512_IDX  8
-# define SSL_MD_MD5_SHA1_IDX 9
-# define SSL_MD_SHA224_IDX 10
-# define SSL_MD_SHA512_IDX 11
-# define SSL_MAX_DIGEST 12
+    public final static long  SSL_MD_MD5_IDX = 0;
+    public final static long  SSL_MD_SHA1_IDX = 1;
+    public final static long  SSL_MD_GOST94_IDX = 2;
+    public final static long  SSL_MD_GOST89MAC_IDX = 3;
+    public final static long  SSL_MD_SHA256_IDX = 4;
+    public final static long  SSL_MD_SHA384_IDX = 5;
+    public final static long  SSL_MD_GOST12_256_IDX = 6;
+    public final static long  SSL_MD_GOST89MAC12_IDX = 7;
+    public final static long  SSL_MD_GOST12_512_IDX = 8;
+    public final static long  SSL_MD_MD5_SHA1_IDX = 9;
+    public final static long  SSL_MD_SHA224_IDX = 10;
+    public final static long  SSL_MD_SHA512_IDX = 11;
+    public final static long  SSL_MAX_DIGEST = 12;
 
 /* Bits for algorithm2 (handshake digests and other extra flags)
 
-/* Bits 0-7 are handshake MAC 
-# define SSL_HANDSHAKE_MAC_MASK  0xFF
-# define SSL_HANDSHAKE_MAC_MD5_SHA1 SSL_MD_MD5_SHA1_IDX
-# define SSL_HANDSHAKE_MAC_SHA256   SSL_MD_SHA256_IDX
-# define SSL_HANDSHAKE_MAC_SHA384   SSL_MD_SHA384_IDX
-# define SSL_HANDSHAKE_MAC_GOST94 SSL_MD_GOST94_IDX
-# define SSL_HANDSHAKE_MAC_GOST12_256 SSL_MD_GOST12_256_IDX
-# define SSL_HANDSHAKE_MAC_GOST12_512 SSL_MD_GOST12_512_IDX
-# define SSL_HANDSHAKE_MAC_DEFAULT  SSL_HANDSHAKE_MAC_MD5_SHA1
+/* Bits 0-7 are handshake MAC */ 
+    public final static long SSL_HANDSHAKE_MAC_MASK  = 0xFF;
+    public final static long SSL_HANDSHAKE_MAC_MD5_SHA1 = SSL_MD_MD5_SHA1_IDX;
+    public final static long SSL_HANDSHAKE_MAC_SHA256 = SSL_MD_SHA256_IDX;
+    public final static long SSL_HANDSHAKE_MAC_SHA384 = SSL_MD_SHA384_IDX;
+    public final static long SSL_HANDSHAKE_MAC_GOST94 = SSL_MD_GOST94_IDX;
+    public final static long SSL_HANDSHAKE_MAC_GOST12_256 = SSL_MD_GOST12_256_IDX;
+    public final static long SSL_HANDSHAKE_MAC_GOST12_512 = SSL_MD_GOST12_512_IDX;
+    public final static long SSL_HANDSHAKE_MAC_DEFAULT  = SSL_HANDSHAKE_MAC_MD5_SHA1;
 
-/* Bits 8-15 bits are PRF 
-# define TLS1_PRF_DGST_SHIFT 8
-# define TLS1_PRF_SHA1_MD5 (SSL_MD_MD5_SHA1_IDX << TLS1_PRF_DGST_SHIFT)
-# define TLS1_PRF_SHA256 (SSL_MD_SHA256_IDX << TLS1_PRF_DGST_SHIFT)
-# define TLS1_PRF_SHA384 (SSL_MD_SHA384_IDX << TLS1_PRF_DGST_SHIFT)
-# define TLS1_PRF_GOST94 (SSL_MD_GOST94_IDX << TLS1_PRF_DGST_SHIFT)
-# define TLS1_PRF_GOST12_256 (SSL_MD_GOST12_256_IDX << TLS1_PRF_DGST_SHIFT)
-# define TLS1_PRF_GOST12_512 (SSL_MD_GOST12_512_IDX << TLS1_PRF_DGST_SHIFT)
-# define TLS1_PRF            (SSL_MD_MD5_SHA1_IDX << TLS1_PRF_DGST_SHIFT)
+    /* Bits 8-15 bits are PRF*/
+    public final static long  TLS1_PRF_DGST_SHIFT = 8;
+    public final static long  TLS1_PRF_SHA1_MD5 = (SSL_MD_MD5_SHA1_IDX << TLS1_PRF_DGST_SHIFT);
+    public final static long  TLS1_PRF_SHA256 = (SSL_MD_SHA256_IDX << TLS1_PRF_DGST_SHIFT);
+    public final static long  TLS1_PRF_SHA384 = (SSL_MD_SHA384_IDX << TLS1_PRF_DGST_SHIFT);
+    public final static long  TLS1_PRF_GOST94 = (SSL_MD_GOST94_IDX << TLS1_PRF_DGST_SHIFT);
+    public final static long  TLS1_PRF_GOST12_256 = (SSL_MD_GOST12_256_IDX << TLS1_PRF_DGST_SHIFT);
+    public final static long  TLS1_PRF_GOST12_512 = (SSL_MD_GOST12_512_IDX << TLS1_PRF_DGST_SHIFT);
+    public final static long  TLS1_PRF            = (SSL_MD_MD5_SHA1_IDX << TLS1_PRF_DGST_SHIFT);
 
- */
-    
     public static final long TLS1_STREAM_MAC = 0x10000;
 
     public static final long SSL_STRONG_MASK         = 0x0000001F;
@@ -432,35 +431,84 @@ public class CipherStrings {
     public static final long SSL_HIGH                = 0x00000008;
     public static final long SSL_FIPS                = 0x00000010;
     public static final long SSL_NOT_DEFAULT         = 0x00000020;
+    
+    
 /* end of open ssl 1.1.1*/
 
-    public final static long SSL3_CK_RSA_NULL_MD5 = 0x03000001;
-    public final static long SSL3_CK_RSA_NULL_SHA = 0x03000002;
-    public final static long SSL3_CK_RSA_RC4_40_MD5 = 0x03000003;
-    public final static long SSL3_CK_RSA_RC4_128_MD5 = 0x03000004;
-    public final static long SSL3_CK_RSA_RC4_128_SHA = 0x03000005;
-    public final static long SSL3_CK_RSA_RC2_40_MD5 = 0x03000006;
-    public final static long SSL3_CK_RSA_IDEA_128_SHA = 0x03000007;
-    public final static long SSL3_CK_RSA_DES_40_CBC_SHA = 0x03000008;
-    public final static long SSL3_CK_RSA_DES_64_CBC_SHA = 0x03000009;
-    public final static long SSL3_CK_RSA_DES_192_CBC3_SHA = 0x0300000A;
-    public final static long SSL3_CK_DH_DSS_DES_40_CBC_SHA = 0x0300000B;
-    public final static long SSL3_CK_DH_DSS_DES_64_CBC_SHA = 0x0300000C;
-    public final static long SSL3_CK_DH_DSS_DES_192_CBC3_SHA = 0x0300000D;
-    public final static long SSL3_CK_DH_RSA_DES_40_CBC_SHA = 0x0300000E;
-    public final static long SSL3_CK_DH_RSA_DES_64_CBC_SHA = 0x0300000F;
-    public final static long SSL3_CK_DH_RSA_DES_192_CBC3_SHA = 0x03000010;
-    public final static long SSL3_CK_EDH_DSS_DES_40_CBC_SHA = 0x03000011;
-    public final static long SSL3_CK_EDH_DSS_DES_64_CBC_SHA = 0x03000012;
-    public final static long SSL3_CK_EDH_DSS_DES_192_CBC3_SHA = 0x03000013;
-    public final static long SSL3_CK_EDH_RSA_DES_40_CBC_SHA = 0x03000014;
-    public final static long SSL3_CK_EDH_RSA_DES_64_CBC_SHA = 0x03000015;
-    public final static long SSL3_CK_EDH_RSA_DES_192_CBC3_SHA = 0x03000016;
-    public final static long SSL3_CK_ADH_RC4_40_MD5 = 0x03000017;
-    public final static long SSL3_CK_ADH_RC4_128_MD5 = 0x03000018;
-    public final static long SSL3_CK_ADH_DES_40_CBC_SHA = 0x03000019;
-    public final static long SSL3_CK_ADH_DES_64_CBC_SHA = 0x0300001A;
-    public final static long SSL3_CK_ADH_DES_192_CBC_SHA = 0x0300001B;
+/* ssl3.h */
+    public final static long  SSL3_CK_SCSV                            = 0x030000FF;
+
+    /*
+     * Signalling cipher suite value from draft-ietf-tls-downgrade-scsv-00
+     * (TLS_FALLBACK_SCSV)
+     */
+    public final static long  SSL3_CK_FALLBACK_SCSV                   = 0x03005600;
+
+    public final static long  SSL3_CK_RSA_NULL_MD5                    = 0x03000001;
+    public final static long  SSL3_CK_RSA_NULL_SHA                    = 0x03000002;
+    public final static long  SSL3_CK_RSA_RC4_40_MD5                  = 0x03000003;
+    public final static long  SSL3_CK_RSA_RC4_128_MD5                 = 0x03000004;
+    public final static long  SSL3_CK_RSA_RC4_128_SHA                 = 0x03000005;
+    public final static long  SSL3_CK_RSA_RC2_40_MD5                  = 0x03000006;
+    public final static long  SSL3_CK_RSA_IDEA_128_SHA                = 0x03000007;
+    public final static long  SSL3_CK_RSA_DES_40_CBC_SHA              = 0x03000008;
+    public final static long  SSL3_CK_RSA_DES_64_CBC_SHA              = 0x03000009;
+    public final static long  SSL3_CK_RSA_DES_192_CBC3_SHA            = 0x0300000A;
+
+    public final static long  SSL3_CK_DH_DSS_DES_40_CBC_SHA           = 0x0300000B;
+    public final static long  SSL3_CK_DH_DSS_DES_64_CBC_SHA           = 0x0300000C;
+    public final static long  SSL3_CK_DH_DSS_DES_192_CBC3_SHA         = 0x0300000D;
+    public final static long  SSL3_CK_DH_RSA_DES_40_CBC_SHA           = 0x0300000E;
+    public final static long  SSL3_CK_DH_RSA_DES_64_CBC_SHA           = 0x0300000F;
+    public final static long  SSL3_CK_DH_RSA_DES_192_CBC3_SHA         = 0x03000010;
+
+    public final static long  SSL3_CK_DHE_DSS_DES_40_CBC_SHA          = 0x03000011;
+    public final static long  SSL3_CK_EDH_DSS_DES_40_CBC_SHA          = SSL3_CK_DHE_DSS_DES_40_CBC_SHA;
+    public final static long  SSL3_CK_DHE_DSS_DES_64_CBC_SHA          = 0x03000012;
+    public final static long  SSL3_CK_EDH_DSS_DES_64_CBC_SHA          = SSL3_CK_DHE_DSS_DES_64_CBC_SHA;
+    public final static long  SSL3_CK_DHE_DSS_DES_192_CBC3_SHA        = 0x03000013;
+    public final static long  SSL3_CK_EDH_DSS_DES_192_CBC3_SHA        = SSL3_CK_DHE_DSS_DES_192_CBC3_SHA;
+    public final static long  SSL3_CK_DHE_RSA_DES_40_CBC_SHA          = 0x03000014;
+    public final static long  SSL3_CK_EDH_RSA_DES_40_CBC_SHA          = SSL3_CK_DHE_RSA_DES_40_CBC_SHA;
+    public final static long  SSL3_CK_DHE_RSA_DES_64_CBC_SHA          = 0x03000015;
+    public final static long  SSL3_CK_EDH_RSA_DES_64_CBC_SHA          = SSL3_CK_DHE_RSA_DES_64_CBC_SHA;
+    public final static long  SSL3_CK_DHE_RSA_DES_192_CBC3_SHA        = 0x03000016;
+    public final static long  SSL3_CK_EDH_RSA_DES_192_CBC3_SHA        = SSL3_CK_DHE_RSA_DES_192_CBC3_SHA;
+
+    public final static long  SSL3_CK_ADH_RC4_40_MD5                  = 0x03000017;
+    public final static long  SSL3_CK_ADH_RC4_128_MD5                 = 0x03000018;
+    public final static long  SSL3_CK_ADH_DES_40_CBC_SHA              = 0x03000019;
+    public final static long  SSL3_CK_ADH_DES_64_CBC_SHA              = 0x0300001A;
+    public final static long  SSL3_CK_ADH_DES_192_CBC_SHA             = 0x0300001B;
+
+    
+//    public final static long SSL3_CK_RSA_NULL_MD5 = 0x03000001;
+//    public final static long SSL3_CK_RSA_NULL_SHA = 0x03000002;
+//    public final static long SSL3_CK_RSA_RC4_40_MD5 = 0x03000003;
+//    public final static long SSL3_CK_RSA_RC4_128_MD5 = 0x03000004;
+//    public final static long SSL3_CK_RSA_RC4_128_SHA = 0x03000005;
+//    public final static long SSL3_CK_RSA_RC2_40_MD5 = 0x03000006;
+//    public final static long SSL3_CK_RSA_IDEA_128_SHA = 0x03000007;
+//    public final static long SSL3_CK_RSA_DES_40_CBC_SHA = 0x03000008;
+//    public final static long SSL3_CK_RSA_DES_64_CBC_SHA = 0x03000009;
+//    public final static long SSL3_CK_RSA_DES_192_CBC3_SHA = 0x0300000A;
+//    public final static long SSL3_CK_DH_DSS_DES_40_CBC_SHA = 0x0300000B;
+//    public final static long SSL3_CK_DH_DSS_DES_64_CBC_SHA = 0x0300000C;
+//    public final static long SSL3_CK_DH_DSS_DES_192_CBC3_SHA = 0x0300000D;
+//    public final static long SSL3_CK_DH_RSA_DES_40_CBC_SHA = 0x0300000E;
+//    public final static long SSL3_CK_DH_RSA_DES_64_CBC_SHA = 0x0300000F;
+//    public final static long SSL3_CK_DH_RSA_DES_192_CBC3_SHA = 0x03000010;
+//    public final static long SSL3_CK_EDH_DSS_DES_40_CBC_SHA = 0x03000011;
+//    public final static long SSL3_CK_EDH_DSS_DES_64_CBC_SHA = 0x03000012;
+//    public final static long SSL3_CK_EDH_DSS_DES_192_CBC3_SHA = 0x03000013;
+//    public final static long SSL3_CK_EDH_RSA_DES_40_CBC_SHA = 0x03000014;
+//    public final static long SSL3_CK_EDH_RSA_DES_64_CBC_SHA = 0x03000015;
+//    public final static long SSL3_CK_EDH_RSA_DES_192_CBC3_SHA = 0x03000016;
+//    public final static long SSL3_CK_ADH_RC4_40_MD5 = 0x03000017;
+//    public final static long SSL3_CK_ADH_RC4_128_MD5 = 0x03000018;
+//    public final static long SSL3_CK_ADH_DES_40_CBC_SHA = 0x03000019;
+//    public final static long SSL3_CK_ADH_DES_64_CBC_SHA = 0x0300001A;
+//    public final static long SSL3_CK_ADH_DES_192_CBC_SHA = 0x0300001B;
     public final static long SSL3_CK_FZA_DMS_NULL_SHA = 0x0300001C;
     public final static long SSL3_CK_FZA_DMS_FZA_SHA = 0x0300001D;
     public final static long SSL3_CK_KRB5_DES_64_CBC_SHA = 0x0300001E;
@@ -485,43 +533,329 @@ public class CipherStrings {
     public final static long TLS1_CK_RSA_EXPORT1024_WITH_RC4_56_SHA = 0x03000064;
     public final static long TLS1_CK_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA = 0x03000065;
     public final static long TLS1_CK_DHE_DSS_WITH_RC4_128_SHA = 0x03000066;
-    public final static long TLS1_CK_RSA_WITH_AES_128_SHA = 0x0300002F;
-    public final static long TLS1_CK_DH_DSS_WITH_AES_128_SHA = 0x03000030;
-    public final static long TLS1_CK_DH_RSA_WITH_AES_128_SHA = 0x03000031;
-    public final static long TLS1_CK_DHE_DSS_WITH_AES_128_SHA = 0x03000032;
-    public final static long TLS1_CK_DHE_RSA_WITH_AES_128_SHA = 0x03000033;
-    public final static long TLS1_CK_ADH_WITH_AES_128_SHA = 0x03000034;
-    public final static long TLS1_CK_RSA_WITH_AES_256_SHA = 0x03000035;
-    public final static long TLS1_CK_DH_DSS_WITH_AES_256_SHA = 0x03000036;
-    public final static long TLS1_CK_DH_RSA_WITH_AES_256_SHA = 0x03000037;
-    public final static long TLS1_CK_DHE_DSS_WITH_AES_256_SHA = 0x03000038;
-    public final static long TLS1_CK_DHE_RSA_WITH_AES_256_SHA = 0x03000039;
-    public final static long TLS1_CK_ADH_WITH_AES_256_SHA = 0x0300003A;
-    public final static long TLS1_CK_ECDH_ECDSA_WITH_NULL_SHA = 0x0300C001;
-    public final static long TLS1_CK_ECDH_ECDSA_WITH_RC4_128_SHA = 0x0300C002;
-    public final static long TLS1_CK_ECDH_ECDSA_WITH_DES_192_CBC3_SHA = 0x0300C003;
-    public final static long TLS1_CK_ECDH_ECDSA_WITH_AES_128_CBC_SHA = 0x0300C004;
-    public final static long TLS1_CK_ECDH_ECDSA_WITH_AES_256_CBC_SHA = 0x0300C005;
-    public final static long TLS1_CK_ECDHE_ECDSA_WITH_NULL_SHA = 0x0300C006;
-    public final static long TLS1_CK_ECDHE_ECDSA_WITH_RC4_128_SHA = 0x0300C007;
-    public final static long TLS1_CK_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA = 0x0300C008;
+//    public final static long TLS1_CK_RSA_WITH_AES_128_SHA = 0x0300002F;
+//    public final static long TLS1_CK_DH_DSS_WITH_AES_128_SHA = 0x03000030;
+//    public final static long TLS1_CK_DH_RSA_WITH_AES_128_SHA = 0x03000031;
+//    public final static long TLS1_CK_DHE_DSS_WITH_AES_128_SHA = 0x03000032;
+//    public final static long TLS1_CK_DHE_RSA_WITH_AES_128_SHA = 0x03000033;
+//    public final static long TLS1_CK_ADH_WITH_AES_128_SHA = 0x03000034;
+//    public final static long TLS1_CK_RSA_WITH_AES_256_SHA = 0x03000035;
+//    public final static long TLS1_CK_DH_DSS_WITH_AES_256_SHA = 0x03000036;
+//    public final static long TLS1_CK_DH_RSA_WITH_AES_256_SHA = 0x03000037;
+//    public final static long TLS1_CK_DHE_DSS_WITH_AES_256_SHA = 0x03000038;
+//    public final static long TLS1_CK_DHE_RSA_WITH_AES_256_SHA = 0x03000039;
+//    public final static long TLS1_CK_ADH_WITH_AES_256_SHA = 0x0300003A;
+//    public final static long TLS1_CK_ECDH_ECDSA_WITH_NULL_SHA = 0x0300C001;
+//    public final static long TLS1_CK_ECDH_ECDSA_WITH_RC4_128_SHA = 0x0300C002;
+//    public final static long TLS1_CK_ECDH_ECDSA_WITH_DES_192_CBC3_SHA = 0x0300C003;
+//    public final static long TLS1_CK_ECDH_ECDSA_WITH_AES_128_CBC_SHA = 0x0300C004;
+//    public final static long TLS1_CK_ECDH_ECDSA_WITH_AES_256_CBC_SHA = 0x0300C005;
+//    public final static long TLS1_CK_ECDHE_ECDSA_WITH_NULL_SHA = 0x0300C006;
+//    public final static long TLS1_CK_ECDHE_ECDSA_WITH_RC4_128_SHA = 0x0300C007;
+//    public final static long TLS1_CK_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA = 0x0300C008;
     public final static long TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA = 0x0300C009;
     public final static long TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA = 0x0300C00A;
-    public final static long TLS1_CK_ECDH_RSA_WITH_NULL_SHA = 0x0300C00B;
-    public final static long TLS1_CK_ECDH_RSA_WITH_RC4_128_SHA = 0x0300C00C;
-    public final static long TLS1_CK_ECDH_RSA_WITH_DES_192_CBC3_SHA = 0x0300C00D;
+//    public final static long TLS1_CK_ECDH_RSA_WITH_NULL_SHA = 0x0300C00B;
+//    public final static long TLS1_CK_ECDH_RSA_WITH_RC4_128_SHA = 0x0300C00C;
+//    public final static long TLS1_CK_ECDH_RSA_WITH_DES_192_CBC3_SHA = 0x0300C00D;
     public final static long TLS_ECDH_RSA_WITH_AES_128_CBC_SHA = 0x0300C00E;
     public final static long TLS_ECDH_RSA_WITH_AES_256_CBC_SHA = 0x0300C00F;
-    public final static long TLS1_CK_ECDHE_RSA_WITH_NULL_SHA = 0x0300C010;
-    public final static long TLS1_CK_ECDHE_RSA_WITH_RC4_128_SHA = 0x0300C011;
-    public final static long TLS1_CK_ECDHE_RSA_WITH_DES_192_CBC3_SHA = 0x0300C012;
+//    public final static long TLS1_CK_ECDHE_RSA_WITH_NULL_SHA = 0x0300C010;
+//    public final static long TLS1_CK_ECDHE_RSA_WITH_RC4_128_SHA = 0x0300C011;
+//    public final static long TLS1_CK_ECDHE_RSA_WITH_DES_192_CBC3_SHA = 0x0300C012;
     public final static long TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA = 0x0300C013;
     public final static long TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA = 0x0300C014;
-    public final static long TLS1_CK_ECDH_anon_WITH_NULL_SHA = 0x0300C015;
+//    public final static long TLS1_CK_ECDH_anon_WITH_NULL_SHA = 0x0300C015;
     public final static long TLS_ECDH_anon_WITH_RC4_128_SHA = 0x0300C016;
     public final static long TLS_ECDH_anon_WITH_DES_192_CBC3_SHA = 0x0300C017;
     public final static long TLS_ECDH_anon_WITH_AES_128_CBC_SHA = 0x0300C018;
     public final static long TLS_ECDH_anon_WITH_AES_256_CBC_SHA = 0x0300C019;
+    
+    public final static long  TLS1_CK_PSK_WITH_RC4_128_SHA                    = 0x0300008A;
+    public final static long  TLS1_CK_PSK_WITH_3DES_EDE_CBC_SHA               = 0x0300008B;
+    public final static long  TLS1_CK_PSK_WITH_AES_128_CBC_SHA                = 0x0300008C;
+    public final static long  TLS1_CK_PSK_WITH_AES_256_CBC_SHA                = 0x0300008D;
+    public final static long  TLS1_CK_DHE_PSK_WITH_RC4_128_SHA                = 0x0300008E;
+    public final static long  TLS1_CK_DHE_PSK_WITH_3DES_EDE_CBC_SHA           = 0x0300008F;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_128_CBC_SHA            = 0x03000090;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_256_CBC_SHA            = 0x03000091;
+    public final static long  TLS1_CK_RSA_PSK_WITH_RC4_128_SHA                = 0x03000092;
+    public final static long  TLS1_CK_RSA_PSK_WITH_3DES_EDE_CBC_SHA           = 0x03000093;
+    public final static long  TLS1_CK_RSA_PSK_WITH_AES_128_CBC_SHA            = 0x03000094;
+    public final static long  TLS1_CK_RSA_PSK_WITH_AES_256_CBC_SHA            = 0x03000095;
+
+    /* PSK ciphersuites from 5487 */
+    public final static long  TLS1_CK_PSK_WITH_AES_128_GCM_SHA256             = 0x030000A8;
+    public final static long  TLS1_CK_PSK_WITH_AES_256_GCM_SHA384             = 0x030000A9;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_128_GCM_SHA256         = 0x030000AA;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_256_GCM_SHA384         = 0x030000AB;
+    public final static long  TLS1_CK_RSA_PSK_WITH_AES_128_GCM_SHA256         = 0x030000AC;
+    public final static long  TLS1_CK_RSA_PSK_WITH_AES_256_GCM_SHA384         = 0x030000AD;
+    public final static long  TLS1_CK_PSK_WITH_AES_128_CBC_SHA256             = 0x030000AE;
+    public final static long  TLS1_CK_PSK_WITH_AES_256_CBC_SHA384             = 0x030000AF;
+    public final static long  TLS1_CK_PSK_WITH_NULL_SHA256                    = 0x030000B0;
+    public final static long  TLS1_CK_PSK_WITH_NULL_SHA384                    = 0x030000B1;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_128_CBC_SHA256         = 0x030000B2;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_256_CBC_SHA384         = 0x030000B3;
+    public final static long  TLS1_CK_DHE_PSK_WITH_NULL_SHA256                = 0x030000B4;
+    public final static long  TLS1_CK_DHE_PSK_WITH_NULL_SHA384                = 0x030000B5;
+    public final static long  TLS1_CK_RSA_PSK_WITH_AES_128_CBC_SHA256         = 0x030000B6;
+    public final static long  TLS1_CK_RSA_PSK_WITH_AES_256_CBC_SHA384         = 0x030000B7;
+    public final static long  TLS1_CK_RSA_PSK_WITH_NULL_SHA256                = 0x030000B8;
+    public final static long  TLS1_CK_RSA_PSK_WITH_NULL_SHA384                = 0x030000B9;
+
+    /* NULL PSK ciphersuites from RFC4785 */
+    public final static long  TLS1_CK_PSK_WITH_NULL_SHA                       = 0x0300002C;
+    public final static long  TLS1_CK_DHE_PSK_WITH_NULL_SHA                   = 0x0300002D;
+    public final static long  TLS1_CK_RSA_PSK_WITH_NULL_SHA                   = 0x0300002E;
+
+    /* AES ciphersuites from RFC3268 */
+    public final static long  TLS1_CK_RSA_WITH_AES_128_SHA                    = 0x0300002F;
+    public final static long  TLS1_CK_DH_DSS_WITH_AES_128_SHA                 = 0x03000030;
+    public final static long  TLS1_CK_DH_RSA_WITH_AES_128_SHA                 = 0x03000031;
+    public final static long  TLS1_CK_DHE_DSS_WITH_AES_128_SHA                = 0x03000032;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_128_SHA                = 0x03000033;
+    public final static long  TLS1_CK_ADH_WITH_AES_128_SHA                    = 0x03000034;
+    public final static long  TLS1_CK_RSA_WITH_AES_256_SHA                    = 0x03000035;
+    public final static long  TLS1_CK_DH_DSS_WITH_AES_256_SHA                 = 0x03000036;
+    public final static long  TLS1_CK_DH_RSA_WITH_AES_256_SHA                 = 0x03000037;
+    public final static long  TLS1_CK_DHE_DSS_WITH_AES_256_SHA                = 0x03000038;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_256_SHA                = 0x03000039;
+    public final static long  TLS1_CK_ADH_WITH_AES_256_SHA                    = 0x0300003A;
+
+    /* TLS v1.2 ciphersuites */
+    public final static long  TLS1_CK_RSA_WITH_NULL_SHA256                    = 0x0300003B;
+    public final static long  TLS1_CK_RSA_WITH_AES_128_SHA256                 = 0x0300003C;
+    public final static long  TLS1_CK_RSA_WITH_AES_256_SHA256                 = 0x0300003D;
+    public final static long  TLS1_CK_DH_DSS_WITH_AES_128_SHA256              = 0x0300003E;
+    public final static long  TLS1_CK_DH_RSA_WITH_AES_128_SHA256              = 0x0300003F;
+    public final static long  TLS1_CK_DHE_DSS_WITH_AES_128_SHA256             = 0x03000040;
+;
+    /* Camellia ciphersuites from RFC4132 */;
+    public final static long  TLS1_CK_RSA_WITH_CAMELLIA_128_CBC_SHA           = 0x03000041;
+    public final static long  TLS1_CK_DH_DSS_WITH_CAMELLIA_128_CBC_SHA        = 0x03000042;
+    public final static long  TLS1_CK_DH_RSA_WITH_CAMELLIA_128_CBC_SHA        = 0x03000043;
+    public final static long  TLS1_CK_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA       = 0x03000044;
+    public final static long  TLS1_CK_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA       = 0x03000045;
+    public final static long  TLS1_CK_ADH_WITH_CAMELLIA_128_CBC_SHA           = 0x03000046;
+
+    /* TLS v1.2 ciphersuites */
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_128_SHA256             = 0x03000067;
+    public final static long  TLS1_CK_DH_DSS_WITH_AES_256_SHA256              = 0x03000068;
+    public final static long  TLS1_CK_DH_RSA_WITH_AES_256_SHA256              = 0x03000069;
+    public final static long  TLS1_CK_DHE_DSS_WITH_AES_256_SHA256             = 0x0300006A;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_256_SHA256             = 0x0300006B;
+    public final static long  TLS1_CK_ADH_WITH_AES_128_SHA256                 = 0x0300006C;
+    public final static long  TLS1_CK_ADH_WITH_AES_256_SHA256                 = 0x0300006D;
+
+    /* Camellia ciphersuites from RFC4132 */
+    public final static long  TLS1_CK_RSA_WITH_CAMELLIA_256_CBC_SHA           = 0x03000084;
+    public final static long  TLS1_CK_DH_DSS_WITH_CAMELLIA_256_CBC_SHA        = 0x03000085;
+    public final static long  TLS1_CK_DH_RSA_WITH_CAMELLIA_256_CBC_SHA        = 0x03000086;
+    public final static long  TLS1_CK_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA       = 0x03000087;
+    public final static long  TLS1_CK_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA       = 0x03000088;
+    public final static long  TLS1_CK_ADH_WITH_CAMELLIA_256_CBC_SHA           = 0x03000089;
+
+    /* SEED ciphersuites from RFC4162 */;
+    public final static long  TLS1_CK_RSA_WITH_SEED_SHA                       = 0x03000096;
+    public final static long  TLS1_CK_DH_DSS_WITH_SEED_SHA                    = 0x03000097;
+    public final static long  TLS1_CK_DH_RSA_WITH_SEED_SHA                    = 0x03000098;
+    public final static long  TLS1_CK_DHE_DSS_WITH_SEED_SHA                   = 0x03000099;
+    public final static long  TLS1_CK_DHE_RSA_WITH_SEED_SHA                   = 0x0300009A;
+    public final static long  TLS1_CK_ADH_WITH_SEED_SHA                       = 0x0300009B;
+
+    /* TLS v1.2 GCM ciphersuites from RFC5288 */
+    public final static long  TLS1_CK_RSA_WITH_AES_128_GCM_SHA256             = 0x0300009C;
+    public final static long  TLS1_CK_RSA_WITH_AES_256_GCM_SHA384             = 0x0300009D;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_128_GCM_SHA256         = 0x0300009E;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_256_GCM_SHA384         = 0x0300009F;
+    public final static long  TLS1_CK_DH_RSA_WITH_AES_128_GCM_SHA256          = 0x030000A0;
+    public final static long  TLS1_CK_DH_RSA_WITH_AES_256_GCM_SHA384          = 0x030000A1;
+    public final static long  TLS1_CK_DHE_DSS_WITH_AES_128_GCM_SHA256         = 0x030000A2;
+    public final static long  TLS1_CK_DHE_DSS_WITH_AES_256_GCM_SHA384         = 0x030000A3;
+    public final static long  TLS1_CK_DH_DSS_WITH_AES_128_GCM_SHA256          = 0x030000A4;
+    public final static long  TLS1_CK_DH_DSS_WITH_AES_256_GCM_SHA384          = 0x030000A5;
+    public final static long  TLS1_CK_ADH_WITH_AES_128_GCM_SHA256             = 0x030000A6;
+    public final static long  TLS1_CK_ADH_WITH_AES_256_GCM_SHA384             = 0x030000A7;
+
+    /* CCM ciphersuites from RFC6655 */;;
+    public final static long  TLS1_CK_RSA_WITH_AES_128_CCM                    = 0x0300C09C;
+    public final static long  TLS1_CK_RSA_WITH_AES_256_CCM                    = 0x0300C09D;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_128_CCM                = 0x0300C09E;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_256_CCM                = 0x0300C09F;
+    public final static long  TLS1_CK_RSA_WITH_AES_128_CCM_8                  = 0x0300C0A0;
+    public final static long  TLS1_CK_RSA_WITH_AES_256_CCM_8                  = 0x0300C0A1;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_128_CCM_8              = 0x0300C0A2;
+    public final static long  TLS1_CK_DHE_RSA_WITH_AES_256_CCM_8              = 0x0300C0A3;
+    public final static long  TLS1_CK_PSK_WITH_AES_128_CCM                    = 0x0300C0A4;
+    public final static long  TLS1_CK_PSK_WITH_AES_256_CCM                    = 0x0300C0A5;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_128_CCM                = 0x0300C0A6;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_256_CCM                = 0x0300C0A7;
+    public final static long  TLS1_CK_PSK_WITH_AES_128_CCM_8                  = 0x0300C0A8;
+    public final static long  TLS1_CK_PSK_WITH_AES_256_CCM_8                  = 0x0300C0A9;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_128_CCM_8              = 0x0300C0AA;
+    public final static long  TLS1_CK_DHE_PSK_WITH_AES_256_CCM_8              = 0x0300C0AB;
+
+    /* CCM ciphersuites from RFC7251 */
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_128_CCM            = 0x0300C0AC;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_256_CCM            = 0x0300C0AD;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_128_CCM_8          = 0x0300C0AE;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_256_CCM_8          = 0x0300C0AF;
+
+    /* TLS 1.2 Camellia SHA-256 ciphersuites from RFC5932 */
+    public final static long  TLS1_CK_RSA_WITH_CAMELLIA_128_CBC_SHA256                = 0x030000BA;
+    public final static long  TLS1_CK_DH_DSS_WITH_CAMELLIA_128_CBC_SHA256             = 0x030000BB;
+    public final static long  TLS1_CK_DH_RSA_WITH_CAMELLIA_128_CBC_SHA256             = 0x030000BC;
+    public final static long  TLS1_CK_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256            = 0x030000BD;
+    public final static long  TLS1_CK_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256            = 0x030000BE;
+    public final static long  TLS1_CK_ADH_WITH_CAMELLIA_128_CBC_SHA256                = 0x030000BF;
+
+    public final static long  TLS1_CK_RSA_WITH_CAMELLIA_256_CBC_SHA256                = 0x030000C0;
+    public final static long  TLS1_CK_DH_DSS_WITH_CAMELLIA_256_CBC_SHA256             = 0x030000C1;
+    public final static long  TLS1_CK_DH_RSA_WITH_CAMELLIA_256_CBC_SHA256             = 0x030000C2;
+    public final static long  TLS1_CK_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256            = 0x030000C3;
+    public final static long  TLS1_CK_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256            = 0x030000C4;
+    public final static long  TLS1_CK_ADH_WITH_CAMELLIA_256_CBC_SHA256                = 0x030000C5;
+
+    /* ECC ciphersuites from RFC4492 */
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_NULL_SHA                = 0x0300C001;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_RC4_128_SHA             = 0x0300C002;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_DES_192_CBC3_SHA        = 0x0300C003;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_AES_128_CBC_SHA         = 0x0300C004;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_AES_256_CBC_SHA         = 0x0300C005;
+;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_NULL_SHA               = 0x0300C006;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_RC4_128_SHA            = 0x0300C007;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA       = 0x0300C008;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_128_CBC_SHA        = 0x0300C009;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_256_CBC_SHA        = 0x0300C00A;
+
+    public final static long  TLS1_CK_ECDH_RSA_WITH_NULL_SHA                  = 0x0300C00B;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_RC4_128_SHA               = 0x0300C00C;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_DES_192_CBC3_SHA          = 0x0300C00D;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_AES_128_CBC_SHA           = 0x0300C00E;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_AES_256_CBC_SHA           = 0x0300C00F;
+
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_NULL_SHA                 = 0x0300C010;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_RC4_128_SHA              = 0x0300C011;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_DES_192_CBC3_SHA         = 0x0300C012;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_AES_128_CBC_SHA          = 0x0300C013;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_AES_256_CBC_SHA          = 0x0300C014;
+
+    public final static long  TLS1_CK_ECDH_anon_WITH_NULL_SHA                 = 0x0300C015;
+    public final static long  TLS1_CK_ECDH_anon_WITH_RC4_128_SHA              = 0x0300C016;
+    public final static long  TLS1_CK_ECDH_anon_WITH_DES_192_CBC3_SHA         = 0x0300C017;
+    public final static long  TLS1_CK_ECDH_anon_WITH_AES_128_CBC_SHA          = 0x0300C018;
+    public final static long  TLS1_CK_ECDH_anon_WITH_AES_256_CBC_SHA          = 0x0300C019;
+
+    /* SRP ciphersuites from RFC 5054 */
+    public final static long  TLS1_CK_SRP_SHA_WITH_3DES_EDE_CBC_SHA           = 0x0300C01A;
+    public final static long  TLS1_CK_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA       = 0x0300C01B;
+    public final static long  TLS1_CK_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA       = 0x0300C01C;
+    public final static long  TLS1_CK_SRP_SHA_WITH_AES_128_CBC_SHA            = 0x0300C01D;
+    public final static long  TLS1_CK_SRP_SHA_RSA_WITH_AES_128_CBC_SHA        = 0x0300C01E;
+    public final static long  TLS1_CK_SRP_SHA_DSS_WITH_AES_128_CBC_SHA        = 0x0300C01F;
+    public final static long  TLS1_CK_SRP_SHA_WITH_AES_256_CBC_SHA            = 0x0300C020;
+    public final static long  TLS1_CK_SRP_SHA_RSA_WITH_AES_256_CBC_SHA        = 0x0300C021;
+    public final static long  TLS1_CK_SRP_SHA_DSS_WITH_AES_256_CBC_SHA        = 0x0300C022;
+
+    /* ECDH HMAC based ciphersuites from RFC5289 */
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_128_SHA256         = 0x0300C023;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_256_SHA384         = 0x0300C024;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_AES_128_SHA256          = 0x0300C025;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_AES_256_SHA384          = 0x0300C026;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_AES_128_SHA256           = 0x0300C027;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_AES_256_SHA384           = 0x0300C028;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_AES_128_SHA256            = 0x0300C029;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_AES_256_SHA384            = 0x0300C02A;
+
+    /* ECDH GCM based ciphersuites from RFC5289 */
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256     = 0x0300C02B;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384     = 0x0300C02C;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_AES_128_GCM_SHA256      = 0x0300C02D;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_AES_256_GCM_SHA384      = 0x0300C02E;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_AES_128_GCM_SHA256       = 0x0300C02F;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_AES_256_GCM_SHA384       = 0x0300C030;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_AES_128_GCM_SHA256        = 0x0300C031;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_AES_256_GCM_SHA384        = 0x0300C032;
+
+    /* ECDHE PSK ciphersuites from RFC5489 */
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_RC4_128_SHA              = 0x0300C033;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA         = 0x0300C034;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_AES_128_CBC_SHA          = 0x0300C035;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_AES_256_CBC_SHA          = 0x0300C036;
+
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_AES_128_CBC_SHA256       = 0x0300C037;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_AES_256_CBC_SHA384       = 0x0300C038;
+
+    /* NULL PSK ciphersuites from RFC4785 */
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_NULL_SHA                 = 0x0300C039;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_NULL_SHA256              = 0x0300C03A;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_NULL_SHA384              = 0x0300C03B;
+
+    /* Camellia-CBC ciphersuites from RFC6367 */
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256 = 0x0300C072;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384 = 0x0300C073;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256  = 0x0300C074;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384  = 0x0300C075;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256   = 0x0300C076;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384   = 0x0300C077;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256    = 0x0300C078;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384    = 0x0300C079;
+
+    public final static long  TLS1_CK_PSK_WITH_CAMELLIA_128_CBC_SHA256         = 0x0300C094;
+    public final static long  TLS1_CK_PSK_WITH_CAMELLIA_256_CBC_SHA384         = 0x0300C095;
+    public final static long  TLS1_CK_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256     = 0x0300C096;
+    public final static long  TLS1_CK_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384     = 0x0300C097;
+    public final static long  TLS1_CK_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256     = 0x0300C098;
+    public final static long  TLS1_CK_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384     = 0x0300C099;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256   = 0x0300C09A;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384   = 0x0300C09B;
+
+    /* draft-ietf-tls-chacha20-poly1305-03 */
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_CHACHA20_POLY1305         = 0x0300CCA8;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_CHACHA20_POLY1305       = 0x0300CCA9;
+    public final static long  TLS1_CK_DHE_RSA_WITH_CHACHA20_POLY1305           = 0x0300CCAA;
+    public final static long  TLS1_CK_PSK_WITH_CHACHA20_POLY1305               = 0x0300CCAB;
+    public final static long  TLS1_CK_ECDHE_PSK_WITH_CHACHA20_POLY1305         = 0x0300CCAC;
+    public final static long  TLS1_CK_DHE_PSK_WITH_CHACHA20_POLY1305           = 0x0300CCAD;
+    public final static long  TLS1_CK_RSA_PSK_WITH_CHACHA20_POLY1305           = 0x0300CCAE;
+
+    /* TLS v1.3 ciphersuites */
+    public final static long  TLS1_3_CK_AES_128_GCM_SHA256                     = 0x03001301;
+    public final static long  TLS1_3_CK_AES_256_GCM_SHA384                     = 0x03001302;
+    public final static long  TLS1_3_CK_CHACHA20_POLY1305_SHA256               = 0x03001303;
+    public final static long  TLS1_3_CK_AES_128_CCM_SHA256                     = 0x03001304;
+    public final static long  TLS1_3_CK_AES_128_CCM_8_SHA256                   = 0x03001305;
+
+    /* Aria ciphersuites from RFC6209 */
+    public final static long  TLS1_CK_RSA_WITH_ARIA_128_GCM_SHA256             = 0x0300C050;
+    public final static long  TLS1_CK_RSA_WITH_ARIA_256_GCM_SHA384             = 0x0300C051;
+    public final static long  TLS1_CK_DHE_RSA_WITH_ARIA_128_GCM_SHA256         = 0x0300C052;
+    public final static long  TLS1_CK_DHE_RSA_WITH_ARIA_256_GCM_SHA384         = 0x0300C053;
+    public final static long  TLS1_CK_DH_RSA_WITH_ARIA_128_GCM_SHA256          = 0x0300C054;
+    public final static long  TLS1_CK_DH_RSA_WITH_ARIA_256_GCM_SHA384          = 0x0300C055;
+    public final static long  TLS1_CK_DHE_DSS_WITH_ARIA_128_GCM_SHA256         = 0x0300C056;
+    public final static long  TLS1_CK_DHE_DSS_WITH_ARIA_256_GCM_SHA384         = 0x0300C057;
+    public final static long  TLS1_CK_DH_DSS_WITH_ARIA_128_GCM_SHA256          = 0x0300C058;
+    public final static long  TLS1_CK_DH_DSS_WITH_ARIA_256_GCM_SHA384          = 0x0300C059;
+    public final static long  TLS1_CK_DH_anon_WITH_ARIA_128_GCM_SHA256         = 0x0300C05A;
+    public final static long  TLS1_CK_DH_anon_WITH_ARIA_256_GCM_SHA384         = 0x0300C05B;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256     = 0x0300C05C;
+    public final static long  TLS1_CK_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384     = 0x0300C05D;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_ARIA_128_GCM_SHA256      = 0x0300C05E;
+    public final static long  TLS1_CK_ECDH_ECDSA_WITH_ARIA_256_GCM_SHA384      = 0x0300C05F;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256       = 0x0300C060;
+    public final static long  TLS1_CK_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384       = 0x0300C061;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_ARIA_128_GCM_SHA256        = 0x0300C062;
+    public final static long  TLS1_CK_ECDH_RSA_WITH_ARIA_256_GCM_SHA384        = 0x0300C063;
+    public final static long  TLS1_CK_PSK_WITH_ARIA_128_GCM_SHA256             = 0x0300C06A;
+    public final static long  TLS1_CK_PSK_WITH_ARIA_256_GCM_SHA384             = 0x0300C06B;
+    public final static long  TLS1_CK_DHE_PSK_WITH_ARIA_128_GCM_SHA256         = 0x0300C06C;
+    public final static long  TLS1_CK_DHE_PSK_WITH_ARIA_256_GCM_SHA384         = 0x0300C06D;
+    public final static long  TLS1_CK_RSA_PSK_WITH_ARIA_128_GCM_SHA256         = 0x0300C06E;
+    public final static long  TLS1_CK_RSA_PSK_WITH_ARIA_256_GCM_SHA384         = 0x0300C06F;
+
 
     public final static String TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_MD5 = "EXP1024-RC4-MD5";
     public final static String TLS1_TXT_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5 = "EXP1024-RC2-CBC-MD5";
@@ -529,33 +863,559 @@ public class CipherStrings {
     public final static String TLS1_TXT_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA = "EXP1024-DHE-DSS-DES-CBC-SHA";
     public final static String TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_SHA = "EXP1024-RC4-SHA";
     public final static String TLS1_TXT_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA = "EXP1024-DHE-DSS-RC4-SHA";
-    public final static String TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA = "DHE-DSS-RC4-SHA";
-    public final static String TLS1_TXT_RSA_WITH_AES_128_SHA = "AES128-SHA";
-    public final static String TLS1_TXT_DH_DSS_WITH_AES_128_SHA = "DH-DSS-AES128-SHA";
-    public final static String TLS1_TXT_DH_RSA_WITH_AES_128_SHA = "DH-RSA-AES128-SHA";
-    public final static String TLS1_TXT_DHE_DSS_WITH_AES_128_SHA = "DHE-DSS-AES128-SHA";
-    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_SHA = "DHE-RSA-AES128-SHA";
-    public final static String TLS1_TXT_ADH_WITH_AES_128_SHA = "ADH-AES128-SHA";
-    public final static String TLS1_TXT_RSA_WITH_AES_256_SHA = "AES256-SHA";
-    public final static String TLS1_TXT_DH_DSS_WITH_AES_256_SHA = "DH-DSS-AES256-SHA";
-    public final static String TLS1_TXT_DH_RSA_WITH_AES_256_SHA = "DH-RSA-AES256-SHA";
-    public final static String TLS1_TXT_DHE_DSS_WITH_AES_256_SHA = "DHE-DSS-AES256-SHA";
-    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_SHA = "DHE-RSA-AES256-SHA";
-    public final static String TLS1_TXT_ADH_WITH_AES_256_SHA = "ADH-AES256-SHA";
-    public final static String TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA = "ECDH-ECDSA-NULL-SHA";
-    public final static String TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA = "ECDH-ECDSA-RC4-SHA";
-    public final static String TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA = "ECDH-ECDSA-DES-CBC3-SHA";
-    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA = "ECDHE-ECDSA-NULL-SHA";
-    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA = "ECDHE-ECDSA-RC4-SHA";
-    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA = "ECDHE-ECDSA-DES-CBC3-SHA";
-    public final static String TLS1_TXT_ECDH_RSA_WITH_NULL_SHA = "ECDH-RSA-NULL-SHA";
-    public final static String TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA = "ECDH-RSA-RC4-SHA";
-    public final static String TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA = "ECDH-RSA-DES-CBC3-SHA";
-    public final static String TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA = "ECDHE-RSA-NULL-SHA";
-    public final static String TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA = "ECDHE-RSA-RC4-SHA";
-    public final static String TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA = "ECDHE-RSA-DES-CBC3-SHA";
-    public final static String TLS1_TXT_ECDH_anon_WITH_NULL_SHA = "AECDH-NULL-SHA";
+//    public final static String TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA = "DHE-DSS-RC4-SHA";
+//    public final static String TLS1_TXT_RSA_WITH_AES_128_SHA = "AES128-SHA";
+//    public final static String TLS1_TXT_DH_DSS_WITH_AES_128_SHA = "DH-DSS-AES128-SHA";
+//    public final static String TLS1_TXT_DH_RSA_WITH_AES_128_SHA = "DH-RSA-AES128-SHA";
+//    public final static String TLS1_TXT_DHE_DSS_WITH_AES_128_SHA = "DHE-DSS-AES128-SHA";
+//    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_SHA = "DHE-RSA-AES128-SHA";
+//    public final static String TLS1_TXT_ADH_WITH_AES_128_SHA = "ADH-AES128-SHA";
+//    public final static String TLS1_TXT_RSA_WITH_AES_256_SHA = "AES256-SHA";
+//    public final static String TLS1_TXT_DH_DSS_WITH_AES_256_SHA = "DH-DSS-AES256-SHA";
+//    public final static String TLS1_TXT_DH_RSA_WITH_AES_256_SHA = "DH-RSA-AES256-SHA";
+//    public final static String TLS1_TXT_DHE_DSS_WITH_AES_256_SHA = "DHE-DSS-AES256-SHA";
+//    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_SHA = "DHE-RSA-AES256-SHA";
+//    public final static String TLS1_TXT_ADH_WITH_AES_256_SHA = "ADH-AES256-SHA";
+//    public final static String TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA = "ECDH-ECDSA-NULL-SHA";
+//    public final static String TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA = "ECDH-ECDSA-RC4-SHA";
+//    public final static String TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA = "ECDH-ECDSA-DES-CBC3-SHA";
+//    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA = "ECDHE-ECDSA-NULL-SHA";
+//    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA = "ECDHE-ECDSA-RC4-SHA";
+//    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA = "ECDHE-ECDSA-DES-CBC3-SHA";
+//    public final static String TLS1_TXT_ECDH_RSA_WITH_NULL_SHA = "ECDH-RSA-NULL-SHA";
+//    public final static String TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA = "ECDH-RSA-RC4-SHA";
+//    public final static String TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA = "ECDH-RSA-DES-CBC3-SHA";
+//    public final static String TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA = "ECDHE-RSA-NULL-SHA";
+//    public final static String TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA = "ECDHE-RSA-RC4-SHA";
+//    public final static String TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA = "ECDHE-RSA-DES-CBC3-SHA";
+//    public final static String TLS1_TXT_ECDH_anon_WITH_NULL_SHA = "AECDH-NULL-SHA";
+//    
+//    public final static String TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA               = "DHE-DSS-RC4-SHA";
+
+    public final static String TLS1_TXT_PSK_WITH_NULL_SHA                     = "PSK-NULL-SHA";
+    public final static String TLS1_TXT_DHE_PSK_WITH_NULL_SHA                 = "DHE-PSK-NULL-SHA";
+    public final static String TLS1_TXT_RSA_PSK_WITH_NULL_SHA                 = "RSA-PSK-NULL-SHA";
+
+    /* AES ciphersuites from RFC3268 */
+    public final static String TLS1_TXT_RSA_WITH_AES_128_SHA                  = "AES128-SHA";
+    public final static String TLS1_TXT_DH_DSS_WITH_AES_128_SHA               = "DH-DSS-AES128-SHA";
+    public final static String TLS1_TXT_DH_RSA_WITH_AES_128_SHA               = "DH-RSA-AES128-SHA";
+    public final static String TLS1_TXT_DHE_DSS_WITH_AES_128_SHA              = "DHE-DSS-AES128-SHA";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_SHA              = "DHE-RSA-AES128-SHA";
+    public final static String TLS1_TXT_ADH_WITH_AES_128_SHA                  = "ADH-AES128-SHA";
+
+    public final static String TLS1_TXT_RSA_WITH_AES_256_SHA                  = "AES256-SHA";
+    public final static String TLS1_TXT_DH_DSS_WITH_AES_256_SHA               = "DH-DSS-AES256-SHA";
+    public final static String TLS1_TXT_DH_RSA_WITH_AES_256_SHA               = "DH-RSA-AES256-SHA";
+    public final static String TLS1_TXT_DHE_DSS_WITH_AES_256_SHA              = "DHE-DSS-AES256-SHA";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_SHA              = "DHE-RSA-AES256-SHA";
+    public final static String TLS1_TXT_ADH_WITH_AES_256_SHA                  = "ADH-AES256-SHA";
+
+    /* ECC ciphersuites from RFC4492 */
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA              = "ECDH-ECDSA-NULL-SHA";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA           = "ECDH-ECDSA-RC4-SHA";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA      = "ECDH-ECDSA-DES-CBC3-SHA";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_AES_128_CBC_SHA       = "ECDH-ECDSA-AES128-SHA";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_AES_256_CBC_SHA       = "ECDH-ECDSA-AES256-SHA";
+
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA             = "ECDHE-ECDSA-NULL-SHA";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA          = "ECDHE-ECDSA-RC4-SHA";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA     = "ECDHE-ECDSA-DES-CBC3-SHA";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CBC_SHA      = "ECDHE-ECDSA-AES128-SHA";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CBC_SHA      = "ECDHE-ECDSA-AES256-SHA";
+
+    public final static String TLS1_TXT_ECDH_RSA_WITH_NULL_SHA                = "ECDH-RSA-NULL-SHA";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA             = "ECDH-RSA-RC4-SHA";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA        = "ECDH-RSA-DES-CBC3-SHA";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_AES_128_CBC_SHA         = "ECDH-RSA-AES128-SHA";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_AES_256_CBC_SHA         = "ECDH-RSA-AES256-SHA";
+
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA               = "ECDHE-RSA-NULL-SHA";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA            = "ECDHE-RSA-RC4-SHA";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA       = "ECDHE-RSA-DES-CBC3-SHA";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_AES_128_CBC_SHA        = "ECDHE-RSA-AES128-SHA";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_AES_256_CBC_SHA        = "ECDHE-RSA-AES256-SHA";
+
+    public final static String TLS1_TXT_ECDH_anon_WITH_NULL_SHA               = "AECDH-NULL-SHA";
+    public final static String TLS1_TXT_ECDH_anon_WITH_RC4_128_SHA            = "AECDH-RC4-SHA";
+    public final static String TLS1_TXT_ECDH_anon_WITH_DES_192_CBC3_SHA       = "AECDH-DES-CBC3-SHA";
+    public final static String TLS1_TXT_ECDH_anon_WITH_AES_128_CBC_SHA        = "AECDH-AES128-SHA";
+    public final static String TLS1_TXT_ECDH_anon_WITH_AES_256_CBC_SHA        = "AECDH-AES256-SHA";
+
     
+    /* PSK ciphersuites from RFC 4279 */
+    public final static String TLS1_TXT_PSK_WITH_RC4_128_SHA                  = "PSK-RC4-SHA";
+    public final static String TLS1_TXT_PSK_WITH_3DES_EDE_CBC_SHA             = "PSK-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_PSK_WITH_AES_128_CBC_SHA              = "PSK-AES128-CBC-SHA";
+    public final static String TLS1_TXT_PSK_WITH_AES_256_CBC_SHA              = "PSK-AES256-CBC-SHA";
+
+    public final static String TLS1_TXT_DHE_PSK_WITH_RC4_128_SHA              = "DHE-PSK-RC4-SHA";
+    public final static String TLS1_TXT_DHE_PSK_WITH_3DES_EDE_CBC_SHA         = "DHE-PSK-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_128_CBC_SHA          = "DHE-PSK-AES128-CBC-SHA";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_256_CBC_SHA          = "DHE-PSK-AES256-CBC-SHA";
+    public final static String TLS1_TXT_RSA_PSK_WITH_RC4_128_SHA              = "RSA-PSK-RC4-SHA";
+    public final static String TLS1_TXT_RSA_PSK_WITH_3DES_EDE_CBC_SHA         = "RSA-PSK-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_RSA_PSK_WITH_AES_128_CBC_SHA          = "RSA-PSK-AES128-CBC-SHA";
+    public final static String TLS1_TXT_RSA_PSK_WITH_AES_256_CBC_SHA          = "RSA-PSK-AES256-CBC-SHA";
+
+    /* PSK ciphersuites from RFC 5487 */
+    public final static String TLS1_TXT_PSK_WITH_AES_128_GCM_SHA256           = "PSK-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_PSK_WITH_AES_256_GCM_SHA384           = "PSK-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_128_GCM_SHA256       = "DHE-PSK-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_256_GCM_SHA384       = "DHE-PSK-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_RSA_PSK_WITH_AES_128_GCM_SHA256       = "RSA-PSK-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_RSA_PSK_WITH_AES_256_GCM_SHA384       = "RSA-PSK-AES256-GCM-SHA384";
+
+    public final static String TLS1_TXT_PSK_WITH_AES_128_CBC_SHA256           = "PSK-AES128-CBC-SHA256";
+    public final static String TLS1_TXT_PSK_WITH_AES_256_CBC_SHA384           = "PSK-AES256-CBC-SHA384";
+    public final static String TLS1_TXT_PSK_WITH_NULL_SHA256                  = "PSK-NULL-SHA256";
+    public final static String TLS1_TXT_PSK_WITH_NULL_SHA384                  = "PSK-NULL-SHA384";
+
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_128_CBC_SHA256       = "DHE-PSK-AES128-CBC-SHA256";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_256_CBC_SHA384       = "DHE-PSK-AES256-CBC-SHA384";
+    public final static String TLS1_TXT_DHE_PSK_WITH_NULL_SHA256              = "DHE-PSK-NULL-SHA256";
+    public final static String TLS1_TXT_DHE_PSK_WITH_NULL_SHA384              = "DHE-PSK-NULL-SHA384";
+
+    public final static String TLS1_TXT_RSA_PSK_WITH_AES_128_CBC_SHA256       = "RSA-PSK-AES128-CBC-SHA256";
+    public final static String TLS1_TXT_RSA_PSK_WITH_AES_256_CBC_SHA384       = "RSA-PSK-AES256-CBC-SHA384";
+    public final static String TLS1_TXT_RSA_PSK_WITH_NULL_SHA256              = "RSA-PSK-NULL-SHA256";
+    public final static String TLS1_TXT_RSA_PSK_WITH_NULL_SHA384              = "RSA-PSK-NULL-SHA384";
+
+    /* SRP ciphersuite from RFC 5054 */
+    public final static String TLS1_TXT_SRP_SHA_WITH_3DES_EDE_CBC_SHA         = "SRP-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA     = "SRP-RSA-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA     = "SRP-DSS-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_WITH_AES_128_CBC_SHA          = "SRP-AES-128-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_RSA_WITH_AES_128_CBC_SHA      = "SRP-RSA-AES-128-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_DSS_WITH_AES_128_CBC_SHA      = "SRP-DSS-AES-128-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_WITH_AES_256_CBC_SHA          = "SRP-AES-256-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_RSA_WITH_AES_256_CBC_SHA      = "SRP-RSA-AES-256-CBC-SHA";
+    public final static String TLS1_TXT_SRP_SHA_DSS_WITH_AES_256_CBC_SHA      = "SRP-DSS-AES-256-CBC-SHA";
+
+    /* Camellia ciphersuites from RFC4132 */
+    public final static String TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA         = "CAMELLIA128-SHA";
+    public final static String TLS1_TXT_DH_DSS_WITH_CAMELLIA_128_CBC_SHA      = "DH-DSS-CAMELLIA128-SHA";
+    public final static String TLS1_TXT_DH_RSA_WITH_CAMELLIA_128_CBC_SHA      = "DH-RSA-CAMELLIA128-SHA";
+    public final static String TLS1_TXT_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA     = "DHE-DSS-CAMELLIA128-SHA";
+    public final static String TLS1_TXT_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA     = "DHE-RSA-CAMELLIA128-SHA";
+    public final static String TLS1_TXT_ADH_WITH_CAMELLIA_128_CBC_SHA         = "ADH-CAMELLIA128-SHA";
+
+    public final static String TLS1_TXT_RSA_WITH_CAMELLIA_256_CBC_SHA         = "CAMELLIA256-SHA";
+    public final static String TLS1_TXT_DH_DSS_WITH_CAMELLIA_256_CBC_SHA      = "DH-DSS-CAMELLIA256-SHA";
+    public final static String TLS1_TXT_DH_RSA_WITH_CAMELLIA_256_CBC_SHA      = "DH-RSA-CAMELLIA256-SHA";
+    public final static String TLS1_TXT_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA     = "DHE-DSS-CAMELLIA256-SHA";
+    public final static String TLS1_TXT_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA     = "DHE-RSA-CAMELLIA256-SHA";
+    public final static String TLS1_TXT_ADH_WITH_CAMELLIA_256_CBC_SHA         = "ADH-CAMELLIA256-SHA";
+
+    /* TLS 1.2 Camellia SHA-256 ciphersuites from RFC5932 */
+    public final static String TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA256              = "CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_DH_DSS_WITH_CAMELLIA_128_CBC_SHA256           = "DH-DSS-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_DH_RSA_WITH_CAMELLIA_128_CBC_SHA256           = "DH-RSA-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256          = "DHE-DSS-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256          = "DHE-RSA-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_ADH_WITH_CAMELLIA_128_CBC_SHA256              = "ADH-CAMELLIA128-SHA256";
+
+    public final static String TLS1_TXT_RSA_WITH_CAMELLIA_256_CBC_SHA256              = "CAMELLIA256-SHA256";
+    public final static String TLS1_TXT_DH_DSS_WITH_CAMELLIA_256_CBC_SHA256           = "DH-DSS-CAMELLIA256-SHA256";
+    public final static String TLS1_TXT_DH_RSA_WITH_CAMELLIA_256_CBC_SHA256           = "DH-RSA-CAMELLIA256-SHA256";
+    public final static String TLS1_TXT_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256          = "DHE-DSS-CAMELLIA256-SHA256";
+    public final static String TLS1_TXT_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256          = "DHE-RSA-CAMELLIA256-SHA256";
+    public final static String TLS1_TXT_ADH_WITH_CAMELLIA_256_CBC_SHA256              = "ADH-CAMELLIA256-SHA256";
+
+    public final static String TLS1_TXT_PSK_WITH_CAMELLIA_128_CBC_SHA256              = "PSK-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_PSK_WITH_CAMELLIA_256_CBC_SHA384              = "PSK-CAMELLIA256-SHA384";
+    public final static String TLS1_TXT_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256          = "DHE-PSK-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384          = "DHE-PSK-CAMELLIA256-SHA384";
+    public final static String TLS1_TXT_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256          = "RSA-PSK-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384          = "RSA-PSK-CAMELLIA256-SHA384";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256        = "ECDHE-PSK-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384        = "ECDHE-PSK-CAMELLIA256-SHA384";
+
+    /* SEED ciphersuites from RFC4162 */
+    public final static String TLS1_TXT_RSA_WITH_SEED_SHA                     = "SEED-SHA";
+    public final static String TLS1_TXT_DH_DSS_WITH_SEED_SHA                  = "DH-DSS-SEED-SHA";
+    public final static String TLS1_TXT_DH_RSA_WITH_SEED_SHA                  = "DH-RSA-SEED-SHA";
+    public final static String TLS1_TXT_DHE_DSS_WITH_SEED_SHA                 = "DHE-DSS-SEED-SHA";
+    public final static String TLS1_TXT_DHE_RSA_WITH_SEED_SHA                 = "DHE-RSA-SEED-SHA";
+    public final static String TLS1_TXT_ADH_WITH_SEED_SHA                     = "ADH-SEED-SHA";
+
+    /* TLS v1.2 ciphersuites */
+    public final static String TLS1_TXT_RSA_WITH_NULL_SHA256                  = "NULL-SHA256";
+    public final static String TLS1_TXT_RSA_WITH_AES_128_SHA256               = "AES128-SHA256";
+    public final static String TLS1_TXT_RSA_WITH_AES_256_SHA256               = "AES256-SHA256";
+    public final static String TLS1_TXT_DH_DSS_WITH_AES_128_SHA256            = "DH-DSS-AES128-SHA256";
+    public final static String TLS1_TXT_DH_RSA_WITH_AES_128_SHA256            = "DH-RSA-AES128-SHA256";
+    public final static String TLS1_TXT_DHE_DSS_WITH_AES_128_SHA256           = "DHE-DSS-AES128-SHA256";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_SHA256           = "DHE-RSA-AES128-SHA256";
+    public final static String TLS1_TXT_DH_DSS_WITH_AES_256_SHA256            = "DH-DSS-AES256-SHA256";
+    public final static String TLS1_TXT_DH_RSA_WITH_AES_256_SHA256            = "DH-RSA-AES256-SHA256";
+    public final static String TLS1_TXT_DHE_DSS_WITH_AES_256_SHA256           = "DHE-DSS-AES256-SHA256";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_SHA256           = "DHE-RSA-AES256-SHA256";
+    public final static String TLS1_TXT_ADH_WITH_AES_128_SHA256               = "ADH-AES128-SHA256";
+    public final static String TLS1_TXT_ADH_WITH_AES_256_SHA256               = "ADH-AES256-SHA256";
+
+    /* TLS v1.2 GCM ciphersuites from RFC5288 */
+    public final static String TLS1_TXT_RSA_WITH_AES_128_GCM_SHA256           = "AES128-GCM-SHA256";
+    public final static String TLS1_TXT_RSA_WITH_AES_256_GCM_SHA384           = "AES256-GCM-SHA384";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_GCM_SHA256       = "DHE-RSA-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_GCM_SHA384       = "DHE-RSA-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_DH_RSA_WITH_AES_128_GCM_SHA256        = "DH-RSA-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_DH_RSA_WITH_AES_256_GCM_SHA384        = "DH-RSA-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_DHE_DSS_WITH_AES_128_GCM_SHA256       = "DHE-DSS-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_DHE_DSS_WITH_AES_256_GCM_SHA384       = "DHE-DSS-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_DH_DSS_WITH_AES_128_GCM_SHA256        = "DH-DSS-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_DH_DSS_WITH_AES_256_GCM_SHA384        = "DH-DSS-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_ADH_WITH_AES_128_GCM_SHA256           = "ADH-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_ADH_WITH_AES_256_GCM_SHA384           = "ADH-AES256-GCM-SHA384";
+
+    /* CCM ciphersuites from RFC6655 */
+    public final static String TLS1_TXT_RSA_WITH_AES_128_CCM                  = "AES128-CCM";
+    public final static String TLS1_TXT_RSA_WITH_AES_256_CCM                  = "AES256-CCM";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_CCM              = "DHE-RSA-AES128-CCM";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_CCM              = "DHE-RSA-AES256-CCM";
+
+    public final static String TLS1_TXT_RSA_WITH_AES_128_CCM_8                = "AES128-CCM8";
+    public final static String TLS1_TXT_RSA_WITH_AES_256_CCM_8                = "AES256-CCM8";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_128_CCM_8            = "DHE-RSA-AES128-CCM8";
+    public final static String TLS1_TXT_DHE_RSA_WITH_AES_256_CCM_8            = "DHE-RSA-AES256-CCM8";
+
+    public final static String TLS1_TXT_PSK_WITH_AES_128_CCM                  = "PSK-AES128-CCM";
+    public final static String TLS1_TXT_PSK_WITH_AES_256_CCM                  = "PSK-AES256-CCM";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_128_CCM              = "DHE-PSK-AES128-CCM";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_256_CCM              = "DHE-PSK-AES256-CCM";
+
+    public final static String TLS1_TXT_PSK_WITH_AES_128_CCM_8                = "PSK-AES128-CCM8";
+    public final static String TLS1_TXT_PSK_WITH_AES_256_CCM_8                = "PSK-AES256-CCM8";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_128_CCM_8            = "DHE-PSK-AES128-CCM8";
+    public final static String TLS1_TXT_DHE_PSK_WITH_AES_256_CCM_8            = "DHE-PSK-AES256-CCM8";
+
+    /* CCM ciphersuites from RFC7251 */
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CCM      = "ECDHE-ECDSA-AES128-CCM";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CCM      = "ECDHE-ECDSA-AES256-CCM";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CCM_8    = "ECDHE-ECDSA-AES128-CCM8";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CCM_8    = "ECDHE-ECDSA-AES256-CCM8";
+
+    /* ECDH HMAC based ciphersuites from RFC5289 */
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_SHA256   = "ECDHE-ECDSA-AES128-SHA256";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_SHA384   = "ECDHE-ECDSA-AES256-SHA384";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_AES_128_SHA256    = "ECDH-ECDSA-AES128-SHA256";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_AES_256_SHA384    = "ECDH-ECDSA-AES256-SHA384";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_AES_128_SHA256     = "ECDHE-RSA-AES128-SHA256";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_AES_256_SHA384     = "ECDHE-RSA-AES256-SHA384";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_AES_128_SHA256      = "ECDH-RSA-AES128-SHA256";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_AES_256_SHA384      = "ECDH-RSA-AES256-SHA384";
+
+    /* ECDH GCM based ciphersuites from RFC5289 */
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256   = "ECDHE-ECDSA-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384   = "ECDHE-ECDSA-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_AES_128_GCM_SHA256    = "ECDH-ECDSA-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_AES_256_GCM_SHA384    = "ECDH-ECDSA-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_AES_128_GCM_SHA256     = "ECDHE-RSA-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_AES_256_GCM_SHA384     = "ECDHE-RSA-AES256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_AES_128_GCM_SHA256      = "ECDH-RSA-AES128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_AES_256_GCM_SHA384      = "ECDH-RSA-AES256-GCM-SHA384";
+
+    /* TLS v1.2 PSK GCM ciphersuites from RFC5487 */
+//    public final static String TLS1_TXT_PSK_WITH_AES_128_GCM_SHA256           = "PSK-AES128-GCM-SHA256";
+//    public final static String TLS1_TXT_PSK_WITH_AES_256_GCM_SHA384           = "PSK-AES256-GCM-SHA384";
+
+    /* ECDHE PSK ciphersuites from RFC 5489 */
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_RC4_128_SHA              = "ECDHE-PSK-RC4-SHA";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA         = "ECDHE-PSK-3DES-EDE-CBC-SHA";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_AES_128_CBC_SHA          = "ECDHE-PSK-AES128-CBC-SHA";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_AES_256_CBC_SHA          = "ECDHE-PSK-AES256-CBC-SHA";
+
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_AES_128_CBC_SHA256       = "ECDHE-PSK-AES128-CBC-SHA256";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_AES_256_CBC_SHA384       = "ECDHE-PSK-AES256-CBC-SHA384";
+
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_NULL_SHA                 = "ECDHE-PSK-NULL-SHA";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_NULL_SHA256              = "ECDHE-PSK-NULL-SHA256";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_NULL_SHA384              = "ECDHE-PSK-NULL-SHA384";
+
+    /* Camellia-CBC ciphersuites from RFC6367 */
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256= "ECDHE-ECDSA-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384= "ECDHE-ECDSA-CAMELLIA256-SHA384";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256 = "ECDH-ECDSA-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384 = "ECDH-ECDSA-CAMELLIA256-SHA384";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256  = "ECDHE-RSA-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384  = "ECDHE-RSA-CAMELLIA256-SHA384";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256   = "ECDH-RSA-CAMELLIA128-SHA256";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384   = "ECDH-RSA-CAMELLIA256-SHA384";
+
+    /* draft-ietf-tls-chacha20-poly1305-03 */
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_CHACHA20_POLY1305        = "ECDHE-RSA-CHACHA20-POLY1305";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_CHACHA20_POLY1305      = "ECDHE-ECDSA-CHACHA20-POLY1305";
+    public final static String TLS1_TXT_DHE_RSA_WITH_CHACHA20_POLY1305          = "DHE-RSA-CHACHA20-POLY1305";
+    public final static String TLS1_TXT_PSK_WITH_CHACHA20_POLY1305              = "PSK-CHACHA20-POLY1305";
+    public final static String TLS1_TXT_ECDHE_PSK_WITH_CHACHA20_POLY1305        = "ECDHE-PSK-CHACHA20-POLY1305";
+    public final static String TLS1_TXT_DHE_PSK_WITH_CHACHA20_POLY1305          = "DHE-PSK-CHACHA20-POLY1305";
+    public final static String TLS1_TXT_RSA_PSK_WITH_CHACHA20_POLY1305          = "RSA-PSK-CHACHA20-POLY1305";
+
+    /* Aria ciphersuites from RFC6209 */
+    public final static String TLS1_TXT_RSA_WITH_ARIA_128_GCM_SHA256            = "ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_RSA_WITH_ARIA_256_GCM_SHA384            = "ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_DHE_RSA_WITH_ARIA_128_GCM_SHA256        = "DHE-RSA-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_DHE_RSA_WITH_ARIA_256_GCM_SHA384        = "DHE-RSA-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_DH_RSA_WITH_ARIA_128_GCM_SHA256         = "DH-RSA-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_DH_RSA_WITH_ARIA_256_GCM_SHA384         = "DH-RSA-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_DHE_DSS_WITH_ARIA_128_GCM_SHA256        = "DHE-DSS-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_DHE_DSS_WITH_ARIA_256_GCM_SHA384        = "DHE-DSS-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_DH_DSS_WITH_ARIA_128_GCM_SHA256         = "DH-DSS-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_DH_DSS_WITH_ARIA_256_GCM_SHA384         = "DH-DSS-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_DH_anon_WITH_ARIA_128_GCM_SHA256        = "ADH-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_DH_anon_WITH_ARIA_256_GCM_SHA384        = "ADH-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256    = "ECDHE-ECDSA-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384    = "ECDHE-ECDSA-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_ARIA_128_GCM_SHA256     = "ECDH-ECDSA-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDH_ECDSA_WITH_ARIA_256_GCM_SHA384     = "ECDH-ECDSA-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256      = "ECDHE-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384      = "ECDHE-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_ARIA_128_GCM_SHA256       = "ECDH-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_ECDH_RSA_WITH_ARIA_256_GCM_SHA384       = "ECDH-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_PSK_WITH_ARIA_128_GCM_SHA256            = "PSK-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_PSK_WITH_ARIA_256_GCM_SHA384            = "PSK-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_DHE_PSK_WITH_ARIA_128_GCM_SHA256        = "DHE-PSK-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_DHE_PSK_WITH_ARIA_256_GCM_SHA384        = "DHE-PSK-ARIA256-GCM-SHA384";
+    public final static String TLS1_TXT_RSA_PSK_WITH_ARIA_128_GCM_SHA256        = "RSA-PSK-ARIA128-GCM-SHA256";
+    public final static String TLS1_TXT_RSA_PSK_WITH_ARIA_256_GCM_SHA384        = "RSA-PSK-ARIA256-GCM-SHA384";
+
+    /* a bundle of RFC standard cipher names, generated from ssl3_ciphers[] */
+    public final static String SSL3_RFC_RSA_NULL_MD5                  = "TLS_RSA_WITH_NULL_MD5";
+    public final static String SSL3_RFC_RSA_NULL_SHA                  = "TLS_RSA_WITH_NULL_SHA";
+    public final static String SSL3_RFC_RSA_DES_192_CBC3_SHA          = "TLS_RSA_WITH_3DES_EDE_CBC_SHA";
+    public final static String SSL3_RFC_DHE_DSS_DES_192_CBC3_SHA      = "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA";
+    public final static String SSL3_RFC_DHE_RSA_DES_192_CBC3_SHA      = "TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA";
+    public final static String SSL3_RFC_ADH_DES_192_CBC_SHA           = "TLS_DH_anon_WITH_3DES_EDE_CBC_SHA";
+    public final static String SSL3_RFC_RSA_IDEA_128_SHA              = "TLS_RSA_WITH_IDEA_CBC_SHA";
+    public final static String SSL3_RFC_RSA_RC4_128_MD5               = "TLS_RSA_WITH_RC4_128_MD5";
+    public final static String SSL3_RFC_RSA_RC4_128_SHA               = "TLS_RSA_WITH_RC4_128_SHA";
+    public final static String SSL3_RFC_ADH_RC4_128_MD5               = "TLS_DH_anon_WITH_RC4_128_MD5";
+
+    public final static String SSL3_TXT_RSA_NULL_MD5                  = "NULL-MD5";
+    public final static String SSL3_TXT_RSA_NULL_SHA                  = "NULL-SHA";
+    public final static String SSL3_TXT_RSA_RC4_40_MD5                = "EXP-RC4-MD5";
+    public final static String SSL3_TXT_RSA_RC4_128_MD5               = "RC4-MD5";
+    public final static String SSL3_TXT_RSA_RC4_128_SHA               = "RC4-SHA";
+    public final static String SSL3_TXT_RSA_RC2_40_MD5                = "EXP-RC2-CBC-MD5";
+    public final static String SSL3_TXT_RSA_IDEA_128_SHA              = "IDEA-CBC-SHA";
+    public final static String SSL3_TXT_RSA_DES_40_CBC_SHA            = "EXP-DES-CBC-SHA";
+    public final static String SSL3_TXT_RSA_DES_64_CBC_SHA            = "DES-CBC-SHA";
+    public final static String SSL3_TXT_RSA_DES_192_CBC3_SHA          = "DES-CBC3-SHA";
+
+    public final static String SSL3_TXT_DH_DSS_DES_40_CBC_SHA         = "EXP-DH-DSS-DES-CBC-SHA";
+    public final static String SSL3_TXT_DH_DSS_DES_64_CBC_SHA         = "DH-DSS-DES-CBC-SHA";
+    public final static String SSL3_TXT_DH_DSS_DES_192_CBC3_SHA       = "DH-DSS-DES-CBC3-SHA";
+    public final static String SSL3_TXT_DH_RSA_DES_40_CBC_SHA         = "EXP-DH-RSA-DES-CBC-SHA";
+    public final static String SSL3_TXT_DH_RSA_DES_64_CBC_SHA         = "DH-RSA-DES-CBC-SHA";
+    public final static String SSL3_TXT_DH_RSA_DES_192_CBC3_SHA       = "DH-RSA-DES-CBC3-SHA";
+
+    public final static String SSL3_TXT_DHE_DSS_DES_40_CBC_SHA        = "EXP-DHE-DSS-DES-CBC-SHA";
+    public final static String SSL3_TXT_DHE_DSS_DES_64_CBC_SHA        = "DHE-DSS-DES-CBC-SHA";
+    public final static String SSL3_TXT_DHE_DSS_DES_192_CBC3_SHA      = "DHE-DSS-DES-CBC3-SHA";
+    public final static String SSL3_TXT_DHE_RSA_DES_40_CBC_SHA        = "EXP-DHE-RSA-DES-CBC-SHA";
+    public final static String SSL3_TXT_DHE_RSA_DES_64_CBC_SHA        = "DHE-RSA-DES-CBC-SHA";
+    public final static String SSL3_TXT_DHE_RSA_DES_192_CBC3_SHA      = "DHE-RSA-DES-CBC3-SHA";
+    
+    public final static String TLS1_RFC_RSA_WITH_AES_128_SHA                   = "TLS_RSA_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_DHE_DSS_WITH_AES_128_SHA               = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_128_SHA               = "TLS_DHE_RSA_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_ADH_WITH_AES_128_SHA                   = "TLS_DH_anon_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_RSA_WITH_AES_256_SHA                   = "TLS_RSA_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_DHE_DSS_WITH_AES_256_SHA               = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_256_SHA               = "TLS_DHE_RSA_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_ADH_WITH_AES_256_SHA                   = "TLS_DH_anon_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_RSA_WITH_NULL_SHA256                   = "TLS_RSA_WITH_NULL_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_AES_128_SHA256                = "TLS_RSA_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_AES_256_SHA256                = "TLS_RSA_WITH_AES_256_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_DSS_WITH_AES_128_SHA256            = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_128_SHA256            = "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_DSS_WITH_AES_256_SHA256            = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_256_SHA256            = "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256";
+    public final static String TLS1_RFC_ADH_WITH_AES_128_SHA256                = "TLS_DH_anon_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_ADH_WITH_AES_256_SHA256                = "TLS_DH_anon_WITH_AES_256_CBC_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_AES_128_GCM_SHA256            = "TLS_RSA_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_AES_256_GCM_SHA384            = "TLS_RSA_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_128_GCM_SHA256        = "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_256_GCM_SHA384        = "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_DHE_DSS_WITH_AES_128_GCM_SHA256        = "TLS_DHE_DSS_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_DHE_DSS_WITH_AES_256_GCM_SHA384        = "TLS_DHE_DSS_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_ADH_WITH_AES_128_GCM_SHA256            = "TLS_DH_anon_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_ADH_WITH_AES_256_GCM_SHA384            = "TLS_DH_anon_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_RSA_WITH_AES_128_CCM                   = "TLS_RSA_WITH_AES_128_CCM";
+    public final static String TLS1_RFC_RSA_WITH_AES_256_CCM                   = "TLS_RSA_WITH_AES_256_CCM";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_128_CCM               = "TLS_DHE_RSA_WITH_AES_128_CCM";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_256_CCM               = "TLS_DHE_RSA_WITH_AES_256_CCM";
+    public final static String TLS1_RFC_RSA_WITH_AES_128_CCM_8                 = "TLS_RSA_WITH_AES_128_CCM_8";
+    public final static String TLS1_RFC_RSA_WITH_AES_256_CCM_8                 = "TLS_RSA_WITH_AES_256_CCM_8";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_128_CCM_8             = "TLS_DHE_RSA_WITH_AES_128_CCM_8";
+    public final static String TLS1_RFC_DHE_RSA_WITH_AES_256_CCM_8             = "TLS_DHE_RSA_WITH_AES_256_CCM_8";
+    public final static String TLS1_RFC_PSK_WITH_AES_128_CCM                   = "TLS_PSK_WITH_AES_128_CCM";
+    public final static String TLS1_RFC_PSK_WITH_AES_256_CCM                   = "TLS_PSK_WITH_AES_256_CCM";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_128_CCM               = "TLS_DHE_PSK_WITH_AES_128_CCM";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_256_CCM               = "TLS_DHE_PSK_WITH_AES_256_CCM";
+    public final static String TLS1_RFC_PSK_WITH_AES_128_CCM_8                 = "TLS_PSK_WITH_AES_128_CCM_8";
+    public final static String TLS1_RFC_PSK_WITH_AES_256_CCM_8                 = "TLS_PSK_WITH_AES_256_CCM_8";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_128_CCM_8             = "TLS_PSK_DHE_WITH_AES_128_CCM_8";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_256_CCM_8             = "TLS_PSK_DHE_WITH_AES_256_CCM_8";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_CCM           = "TLS_ECDHE_ECDSA_WITH_AES_128_CCM";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_CCM           = "TLS_ECDHE_ECDSA_WITH_AES_256_CCM";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_CCM_8         = "TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_CCM_8         = "TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8";
+    public final static String TLS1_3_RFC_AES_128_GCM_SHA256                   = "TLS_AES_128_GCM_SHA256";
+    public final static String TLS1_3_RFC_AES_256_GCM_SHA384                   = "TLS_AES_256_GCM_SHA384";
+    public final static String TLS1_3_RFC_CHACHA20_POLY1305_SHA256             = "TLS_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_3_RFC_AES_128_CCM_SHA256                   = "TLS_AES_128_CCM_SHA256";
+    public final static String TLS1_3_RFC_AES_128_CCM_8_SHA256                 = "TLS_AES_128_CCM_8_SHA256";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_NULL_SHA              = "TLS_ECDHE_ECDSA_WITH_NULL_SHA";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA      = "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_CBC_SHA       = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_CBC_SHA       = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_NULL_SHA                = "TLS_ECDHE_RSA_WITH_NULL_SHA";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_DES_192_CBC3_SHA        = "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_AES_128_CBC_SHA         = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_AES_256_CBC_SHA         = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_ECDH_anon_WITH_NULL_SHA                = "TLS_ECDH_anon_WITH_NULL_SHA";
+    public final static String TLS1_RFC_ECDH_anon_WITH_DES_192_CBC3_SHA        = "TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_ECDH_anon_WITH_AES_128_CBC_SHA         = "TLS_ECDH_anon_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_ECDH_anon_WITH_AES_256_CBC_SHA         = "TLS_ECDH_anon_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_SHA256        = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_SHA384        = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_AES_128_SHA256          = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_AES_256_SHA384          = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256    = "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384    = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_AES_128_GCM_SHA256      = "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_AES_256_GCM_SHA384      = "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_PSK_WITH_NULL_SHA                      = "TLS_PSK_WITH_NULL_SHA";
+    public final static String TLS1_RFC_DHE_PSK_WITH_NULL_SHA                  = "TLS_DHE_PSK_WITH_NULL_SHA";
+    public final static String TLS1_RFC_RSA_PSK_WITH_NULL_SHA                  = "TLS_RSA_PSK_WITH_NULL_SHA";
+    public final static String TLS1_RFC_PSK_WITH_3DES_EDE_CBC_SHA              = "TLS_PSK_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_PSK_WITH_AES_128_CBC_SHA               = "TLS_PSK_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_PSK_WITH_AES_256_CBC_SHA               = "TLS_PSK_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_DHE_PSK_WITH_3DES_EDE_CBC_SHA          = "TLS_DHE_PSK_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_128_CBC_SHA           = "TLS_DHE_PSK_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_256_CBC_SHA           = "TLS_DHE_PSK_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_RSA_PSK_WITH_3DES_EDE_CBC_SHA          = "TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_RSA_PSK_WITH_AES_128_CBC_SHA           = "TLS_RSA_PSK_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_RSA_PSK_WITH_AES_256_CBC_SHA           = "TLS_RSA_PSK_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_PSK_WITH_AES_128_GCM_SHA256            = "TLS_PSK_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_PSK_WITH_AES_256_GCM_SHA384            = "TLS_PSK_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_128_GCM_SHA256        = "TLS_DHE_PSK_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_256_GCM_SHA384        = "TLS_DHE_PSK_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_RSA_PSK_WITH_AES_128_GCM_SHA256        = "TLS_RSA_PSK_WITH_AES_128_GCM_SHA256";
+    public final static String TLS1_RFC_RSA_PSK_WITH_AES_256_GCM_SHA384        = "TLS_RSA_PSK_WITH_AES_256_GCM_SHA384";
+    public final static String TLS1_RFC_PSK_WITH_AES_128_CBC_SHA256            = "TLS_PSK_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_PSK_WITH_AES_256_CBC_SHA384            = "TLS_PSK_WITH_AES_256_CBC_SHA384";
+    public final static String TLS1_RFC_PSK_WITH_NULL_SHA256                   = "TLS_PSK_WITH_NULL_SHA256";
+    public final static String TLS1_RFC_PSK_WITH_NULL_SHA384                   = "TLS_PSK_WITH_NULL_SHA384";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_128_CBC_SHA256        = "TLS_DHE_PSK_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_PSK_WITH_AES_256_CBC_SHA384        = "TLS_DHE_PSK_WITH_AES_256_CBC_SHA384";
+    public final static String TLS1_RFC_DHE_PSK_WITH_NULL_SHA256               = "TLS_DHE_PSK_WITH_NULL_SHA256";
+    public final static String TLS1_RFC_DHE_PSK_WITH_NULL_SHA384               = "TLS_DHE_PSK_WITH_NULL_SHA384";
+    public final static String TLS1_RFC_RSA_PSK_WITH_AES_128_CBC_SHA256        = "TLS_RSA_PSK_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_RSA_PSK_WITH_AES_256_CBC_SHA384        = "TLS_RSA_PSK_WITH_AES_256_CBC_SHA384";
+    public final static String TLS1_RFC_RSA_PSK_WITH_NULL_SHA256               = "TLS_RSA_PSK_WITH_NULL_SHA256";
+    public final static String TLS1_RFC_RSA_PSK_WITH_NULL_SHA384               = "TLS_RSA_PSK_WITH_NULL_SHA384";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA        = "TLS_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_AES_128_CBC_SHA         = "TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_AES_256_CBC_SHA         = "TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_AES_128_CBC_SHA256      = "TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA256";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_AES_256_CBC_SHA384      = "TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA384";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_NULL_SHA                = "TLS_ECDHE_PSK_WITH_NULL_SHA";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_NULL_SHA256             = "TLS_ECDHE_PSK_WITH_NULL_SHA256";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_NULL_SHA384             = "TLS_ECDHE_PSK_WITH_NULL_SHA384";
+    public final static String TLS1_RFC_SRP_SHA_WITH_3DES_EDE_CBC_SHA          = "TLS_SRP_SHA_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA      = "TLS_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA      = "TLS_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_WITH_AES_128_CBC_SHA           = "TLS_SRP_SHA_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_RSA_WITH_AES_128_CBC_SHA       = "TLS_SRP_SHA_RSA_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_DSS_WITH_AES_128_CBC_SHA       = "TLS_SRP_SHA_DSS_WITH_AES_128_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_WITH_AES_256_CBC_SHA           = "TLS_SRP_SHA_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_RSA_WITH_AES_256_CBC_SHA       = "TLS_SRP_SHA_RSA_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_SRP_SHA_DSS_WITH_AES_256_CBC_SHA       = "TLS_SRP_SHA_DSS_WITH_AES_256_CBC_SHA";
+    public final static String TLS1_RFC_DHE_RSA_WITH_CHACHA20_POLY1305         = "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_CHACHA20_POLY1305       = "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_CHACHA20_POLY1305     = "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_PSK_WITH_CHACHA20_POLY1305             = "TLS_PSK_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_CHACHA20_POLY1305       = "TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_DHE_PSK_WITH_CHACHA20_POLY1305         = "TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_RSA_PSK_WITH_CHACHA20_POLY1305         = "TLS_RSA_PSK_WITH_CHACHA20_POLY1305_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_CAMELLIA_128_CBC_SHA256       = "TLS_RSA_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256   = "TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256   = "TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_ADH_WITH_CAMELLIA_128_CBC_SHA256       = "TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_CAMELLIA_256_CBC_SHA256       = "TLS_RSA_WITH_CAMELLIA_256_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256   = "TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256   = "TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256";
+    public final static String TLS1_RFC_ADH_WITH_CAMELLIA_256_CBC_SHA256       = "TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_CAMELLIA_256_CBC_SHA          = "TLS_RSA_WITH_CAMELLIA_256_CBC_SHA";
+    public final static String TLS1_RFC_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA      = "TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA";
+    public final static String TLS1_RFC_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA      = "TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA";
+    public final static String TLS1_RFC_ADH_WITH_CAMELLIA_256_CBC_SHA          = "TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA";
+    public final static String TLS1_RFC_RSA_WITH_CAMELLIA_128_CBC_SHA          = "TLS_RSA_WITH_CAMELLIA_128_CBC_SHA";
+    public final static String TLS1_RFC_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA      = "TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA";
+    public final static String TLS1_RFC_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA      = "TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA";
+    public final static String TLS1_RFC_ADH_WITH_CAMELLIA_128_CBC_SHA          = "TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256 = "TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384 = "TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256 = "TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384 = "TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384";
+    public final static String TLS1_RFC_PSK_WITH_CAMELLIA_128_CBC_SHA256       = "TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_PSK_WITH_CAMELLIA_256_CBC_SHA384       = "TLS_PSK_WITH_CAMELLIA_256_CBC_SHA384";
+    public final static String TLS1_RFC_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256   = "TLS_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384   = "TLS_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384";
+    public final static String TLS1_RFC_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256   = "TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384   = "TLS_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256 = "TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384 = "TLS_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384";
+    public final static String TLS1_RFC_RSA_WITH_SEED_SHA                      = "TLS_RSA_WITH_SEED_CBC_SHA";
+    public final static String TLS1_RFC_DHE_DSS_WITH_SEED_SHA                  = "TLS_DHE_DSS_WITH_SEED_CBC_SHA";
+    public final static String TLS1_RFC_DHE_RSA_WITH_SEED_SHA                  = "TLS_DHE_RSA_WITH_SEED_CBC_SHA";
+    public final static String TLS1_RFC_ADH_WITH_SEED_SHA                      = "TLS_DH_anon_WITH_SEED_CBC_SHA";
+    public final static String TLS1_RFC_ECDHE_PSK_WITH_RC4_128_SHA             = "TLS_ECDHE_PSK_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_ECDH_anon_WITH_RC4_128_SHA             = "TLS_ECDH_anon_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_RC4_128_SHA           = "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_RC4_128_SHA             = "TLS_ECDHE_RSA_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_PSK_WITH_RC4_128_SHA                   = "TLS_PSK_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_RSA_PSK_WITH_RC4_128_SHA               = "TLS_RSA_PSK_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_DHE_PSK_WITH_RC4_128_SHA               = "TLS_DHE_PSK_WITH_RC4_128_SHA";
+    public final static String TLS1_RFC_RSA_WITH_ARIA_128_GCM_SHA256           = "TLS_RSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_RSA_WITH_ARIA_256_GCM_SHA384           = "TLS_RSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_DHE_RSA_WITH_ARIA_128_GCM_SHA256       = "TLS_DHE_RSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_DHE_RSA_WITH_ARIA_256_GCM_SHA384       = "TLS_DHE_RSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_DH_RSA_WITH_ARIA_128_GCM_SHA256        = "TLS_DH_RSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_DH_RSA_WITH_ARIA_256_GCM_SHA384        = "TLS_DH_RSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_DHE_DSS_WITH_ARIA_128_GCM_SHA256       = "TLS_DHE_DSS_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_DHE_DSS_WITH_ARIA_256_GCM_SHA384       = "TLS_DHE_DSS_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_DH_DSS_WITH_ARIA_128_GCM_SHA256        = "TLS_DH_DSS_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_DH_DSS_WITH_ARIA_256_GCM_SHA384        = "TLS_DH_DSS_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_DH_anon_WITH_ARIA_128_GCM_SHA256       = "TLS_DH_anon_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_DH_anon_WITH_ARIA_256_GCM_SHA384       = "TLS_DH_anon_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256   = "TLS_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384   = "TLS_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_ECDH_ECDSA_WITH_ARIA_128_GCM_SHA256    = "TLS_ECDH_ECDSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_ECDH_ECDSA_WITH_ARIA_256_GCM_SHA384    = "TLS_ECDH_ECDSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256     = "TLS_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384     = "TLS_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_ECDH_RSA_WITH_ARIA_128_GCM_SHA256      = "TLS_ECDH_RSA_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_ECDH_RSA_WITH_ARIA_256_GCM_SHA384      = "TLS_ECDH_RSA_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_PSK_WITH_ARIA_128_GCM_SHA256           = "TLS_PSK_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_PSK_WITH_ARIA_256_GCM_SHA384           = "TLS_PSK_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_DHE_PSK_WITH_ARIA_128_GCM_SHA256       = "TLS_DHE_PSK_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_DHE_PSK_WITH_ARIA_256_GCM_SHA384       = "TLS_DHE_PSK_WITH_ARIA_256_GCM_SHA384";
+    public final static String TLS1_RFC_RSA_PSK_WITH_ARIA_128_GCM_SHA256       = "TLS_RSA_PSK_WITH_ARIA_128_GCM_SHA256";
+    public final static String TLS1_RFC_RSA_PSK_WITH_ARIA_256_GCM_SHA384       = "TLS_RSA_PSK_WITH_ARIA_256_GCM_SHA384";
+
+    public final static int DTLS1_VERSION                   = 0xFEFF;
+    public final static int DTLS1_2_VERSION                 = 0xFEFD;
+    public final static int DTLS_MIN_VERSION                = DTLS1_VERSION;
+    public final static int TLS_MAX_VERSION                = DTLS1_2_VERSION;
+    public final static int DTLS1_VERSION_MAJOR             = 0xFE;
+
+    public final static int DTLS1_BAD_VER                   = 0x0100;
+
+    /* Special value for method supporting multiple versions */
+    public final static int DTLS_ANY_VERSION                = 0x1FFFF;
     /* 
      * OpenSSL 0.9.7:
 
@@ -647,10 +1507,16 @@ struct ssl_cipher_st {
                 long algorithm_enc, long algorithm_mac){
             this(valid, name, stdname, id, algorithm_mkey, algorithm_auth, algorithm_enc, algorithm_mac, 0, 0, 0, 0, 0);
         }
-        //new Def(0,SSL_TXT_CMPDEF, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, SSL_NOT_DEFAULT));
         Def(int valid, String name, String stdname, long id, long algorithm_mkey, long algorithm_auth,
                 long algorithm_enc, long algorithm_mac, int min_tls, int max_tls, int min_dtls, int max_dtls,
                 long algo_strength){
+            this(valid, name, stdname, id, algorithm_mkey, algorithm_auth, algorithm_enc, algorithm_mac, min_tls, max_tls, min_dtls, max_dtls,
+                    algo_strength, 0, 0, 0);
+        }
+        //(int, String, String, long, long, long, long, long, int, int, int, long, long, long, int, int) is undefined
+        Def(int valid, String name, String stdname, long id, long algorithm_mkey, long algorithm_auth,
+                long algorithm_enc, long algorithm_mac, int min_tls, int max_tls, int min_dtls, int max_dtls,
+                long algo_strength, long algorithm2, int strength_bits, int alg_bits){
             // this.valid = (byte) valid;
             this.name = name;
             this.stdname = stdname;
@@ -664,8 +1530,10 @@ struct ssl_cipher_st {
             this.min_dtls = min_dtls; 
             this.max_dtls = max_dtls;
             this.algStrength = algo_strength;
+            this.algorithm2 = algorithm2;
+            this.algStrengthBits = strength_bits;
+            this.algBits = alg_bits;
         }
-
         @Deprecated Def(int valid, String name, long id, long algorithms, long algo_strength, long algorithm2, int strength_bits, int alg_bits, long mask, long maskStrength) {
             //this.valid = (byte) valid;
             this.name = name;
@@ -920,6 +1788,11 @@ struct ssl_cipher_st {
         Definitions.put(name, def);
     }
     private static void def(int valid, String name, String stdname, long id, long algorithm_mkey, long algorithm_auth,
+            long algorithm_enc, long algorithm_mac, int min_tls){
+        Def def = new Def(valid, name, stdname, id, algorithm_mkey, algorithm_auth, algorithm_enc, algorithm_mac, min_tls, 0, 0, 0, 0);
+        Definitions.put(name, def);
+    }
+    private static void def(int valid, String name, String stdname, long id, long algorithm_mkey, long algorithm_auth,
             long algorithm_enc, long algorithm_mac, int min_tls, int max_tls, int min_dtls, int max_dtls,
             long algo_strength){
         Def def = new Def(valid, name, stdname, id, algorithm_mkey, algorithm_auth, algorithm_enc, algorithm_mac, 
@@ -1041,47 +1914,35 @@ struct ssl_cipher_st {
         def(0, SSL_TXT_ARIA_GCM, null, 0, 0, 0, SSL_ARIA128GCM | SSL_ARIA256GCM);
         def(0, SSL_TXT_ARIA128, null, 0, 0, 0, SSL_ARIA128GCM);
         def(0, SSL_TXT_ARIA256, null, 0, 0, 0, SSL_ARIA256GCM);
+        
+        /* MAC aliases */
+        def(0, SSL_TXT_MD5, null, 0, 0, 0, 0, SSL_MD5);
+        def(0, SSL_TXT_SHA1, null, 0, 0, 0, 0, SSL_SHA1);
+        def(0, SSL_TXT_SHA, null, 0, 0, 0, 0, SSL_SHA1);
+        def(0, SSL_TXT_GOST94, null, 0, 0, 0, 0, SSL_GOST94);
+        def(0, SSL_TXT_GOST89MAC, null, 0, 0, 0, 0, SSL_GOST89MAC | SSL_GOST89MAC12);
+        def(0, SSL_TXT_SHA256, null, 0, 0, 0, 0, SSL_SHA256);
+        def(0, SSL_TXT_SHA384, null, 0, 0, 0, 0, SSL_SHA384);
+        def(0, SSL_TXT_GOST12, null, 0, 0, 0, 0, SSL_GOST12_256);
 
-        Definitions.put(SSL_TXT_kDHr,new Def(0,SSL_TXT_kDHr,0,SSL_kDHr,  0,0,0,0,SSL_MKEY_MASK,0));
-        Definitions.put(SSL_TXT_kDHd,new Def(0,SSL_TXT_kDHd,0,SSL_kDHd,  0,0,0,0,SSL_MKEY_MASK,0));
-        
-        Definitions.put(SSL_TXT_kFZA,new Def(0,SSL_TXT_kFZA,0,SSL_kFZA,  0,0,0,0,SSL_MKEY_MASK,0));
-        
-        Definitions.put(SSL_TXT_ECC,new Def(0,SSL_TXT_ECC,	0,(SSL_kECDH|SSL_kECDHE), 0,0,0,0,SSL_MKEY_MASK,0));
-        Definitions.put(SSL_TXT_EDH,new Def(0,SSL_TXT_EDH,	0,SSL_EDH,   0,0,0,0,SSL_MKEY_MASK|SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_aKRB5,new Def(0,SSL_TXT_aKRB5,0,SSL_aKRB5,0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_aRSA,new Def(0,SSL_TXT_aRSA,0,SSL_aRSA,  0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_aDSS,new Def(0,SSL_TXT_aDSS,0,SSL_aDSS,  0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_aFZA,new Def(0,SSL_TXT_aFZA,0,SSL_aFZA,  0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_aNULL,new Def(0,SSL_TXT_aNULL,0,SSL_aNULL,0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_aDH,new Def(0,SSL_TXT_aDH, 0,SSL_aDH,   0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_DSS,new Def(0,SSL_TXT_DSS,	0,SSL_DSS,   0,0,0,0,SSL_AUTH_MASK,0));
-        Definitions.put(SSL_TXT_DES,new Def(0,SSL_TXT_DES,	0,SSL_DES,   0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_3DES,new Def(0,SSL_TXT_3DES,0,SSL_3DES,  0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_RC4,new Def(0,SSL_TXT_RC4,	0,SSL_RC4,   0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_RC2,new Def(0,SSL_TXT_RC2,	0,SSL_RC2,   0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_IDEA,new Def(0,SSL_TXT_IDEA,0,SSL_IDEA,  0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_eNULL,new Def(0,SSL_TXT_eNULL,0,SSL_eNULL,0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_eFZA,new Def(0,SSL_TXT_eFZA,0,SSL_eFZA,  0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_AES,new Def(0,SSL_TXT_AES,	0,SSL_AES,   0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_MD5,new Def(0,SSL_TXT_MD5,	0,SSL_MD5,   0,0,0,0,SSL_MAC_MASK,0));
-        Definitions.put(SSL_TXT_SHA1,new Def(0,SSL_TXT_SHA1,0,SSL_SHA1,  0,0,0,0,SSL_MAC_MASK,0));
-        Definitions.put(SSL_TXT_SHA,new Def(0,SSL_TXT_SHA,	0,SSL_SHA,   0,0,0,0,SSL_MAC_MASK,0));
-        Definitions.put(SSL_TXT_NULL,new Def(0,SSL_TXT_NULL,0,SSL_NULL,  0,0,0,0,SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_KRB5,new Def(0,SSL_TXT_KRB5,0,SSL_KRB5,  0,0,0,0,SSL_AUTH_MASK|SSL_MKEY_MASK,0));
-        Definitions.put(SSL_TXT_RSA,new Def(0,SSL_TXT_RSA,	0,SSL_RSA,   0,0,0,0,SSL_AUTH_MASK|SSL_MKEY_MASK,0));
-        Definitions.put(SSL_TXT_ADH,new Def(0,SSL_TXT_ADH,	0,SSL_ADH,   0,0,0,0,SSL_AUTH_MASK|SSL_MKEY_MASK,0));
-        Definitions.put(SSL_TXT_FZA,new Def(0,SSL_TXT_FZA,	0,SSL_FZA,   0,0,0,0,SSL_AUTH_MASK|SSL_MKEY_MASK|SSL_ENC_MASK,0));
-        Definitions.put(SSL_TXT_SSLV2,new Def(0,SSL_TXT_SSLV2, 0,SSL_SSLV2, 0,0,0,0,SSL_SSL_MASK,0));
-        Definitions.put(SSL_TXT_SSLV3,new Def(0,SSL_TXT_SSLV3, 0,SSL_SSLV3, 0,0,0,0,SSL_SSL_MASK,0));
-        Definitions.put(SSL_TXT_TLSV1,new Def(0,SSL_TXT_TLSV1, 0,SSL_TLSV1, 0,0,0,0,SSL_SSL_MASK,0));
-        Definitions.put(SSL_TXT_EXP,new Def(0,SSL_TXT_EXP   ,0, 0,SSL_EXPORT, 0,0,0,0,SSL_EXP_MASK));
-        Definitions.put(SSL_TXT_EXPORT,new Def(0,SSL_TXT_EXPORT,0, 0,SSL_EXPORT, 0,0,0,0,SSL_EXP_MASK));
-        Definitions.put(SSL_TXT_EXP40,new Def(0,SSL_TXT_EXP40, 0, 0, SSL_EXP40, 0,0,0,0,SSL_STRONG_MASK));
-        Definitions.put(SSL_TXT_EXP56,new Def(0,SSL_TXT_EXP56, 0, 0, SSL_EXP56, 0,0,0,0,SSL_STRONG_MASK));
-        Definitions.put(SSL_TXT_LOW,new Def(0,SSL_TXT_LOW,   0, 0,   SSL_LOW, 0,0,0,0,SSL_STRONG_MASK));
-        Definitions.put(SSL_TXT_MEDIUM,new Def(0,SSL_TXT_MEDIUM,0, 0,SSL_MEDIUM, 0,0,0,0,SSL_STRONG_MASK));
-        Definitions.put(SSL_TXT_HIGH,new Def(0,SSL_TXT_HIGH,  0, 0,  SSL_HIGH, 0,0,0,0,SSL_STRONG_MASK));
+        /* protocol version aliases */
+        def(0, SSL_TXT_SSLV3, null, 0, 0, 0, 0, 0, SSL.SSL3_VERSION);
+        def(0, SSL_TXT_TLSV1, null, 0, 0, 0, 0, 0, SSL.TLS1_VERSION);
+        def(0, "TLSv1.0", null, 0, 0, 0, 0, 0, SSL.TLS1_VERSION);
+        def(0, SSL_TXT_TLSV1_2, null, 0, 0, 0, 0, 0, SSL.TLS1_2_VERSION);
+
+        /* strength classes */
+        def(0, SSL_TXT_LOW, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, SSL_LOW);
+        def(0, SSL_TXT_MEDIUM, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, SSL_MEDIUM);
+        def(0, SSL_TXT_HIGH, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, SSL_HIGH);
+        /* FIPS 140-2 approved ciphersuite */
+        def(0, SSL_TXT_FIPS, null, 0, 0, 0, ~SSL_eNULL, 0, 0, 0, 0, 0, SSL_FIPS);
+
+        /* "EDH-" aliases to "DHE-" labels (for backward compatibility) */
+        def(0, SSL3_TXT_EDH_DSS_DES_192_CBC3_SHA, null, 0,
+         SSL_kDHE, SSL_aDSS, SSL_3DES, SSL_SHA1, 0, 0, 0, 0, SSL_HIGH | SSL_FIPS);
+        def(0, SSL3_TXT_EDH_RSA_DES_192_CBC3_SHA, null, 0,
+         SSL_kDHE, SSL_aRSA, SSL_3DES, SSL_SHA1, 0, 0, 0, 0, SSL_HIGH | SSL_FIPS);
 
         final ArrayList<Def> Ciphers = new ArrayList<Def>( 96 );
         /** OPENSSL 1.1.1 example:
@@ -1117,8 +1978,3057 @@ struct ssl_cipher_st {
             SSL_ALL_STRENGTHS,
             },
          */
+        Ciphers.add(new Def(
+            1,
+            SSL3_TXT_RSA_NULL_MD5,
+            SSL3_RFC_RSA_NULL_MD5,
+            SSL3_CK_RSA_NULL_MD5,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_MD5,
+            SSL.SSL3_VERSION, SSL.TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+        ));
+        Ciphers.add(new Def(
+            1,
+            SSL3_TXT_RSA_NULL_SHA,
+            SSL3_RFC_RSA_NULL_SHA,
+            SSL3_CK_RSA_NULL_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_SHA1,
+            SSL.SSL3_VERSION, SSL.TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0));
         
+        Ciphers.add(new Def(
+            1,
+            SSL3_TXT_RSA_DES_192_CBC3_SHA,
+            SSL3_RFC_RSA_DES_192_CBC3_SHA,
+            SSL3_CK_RSA_DES_192_CBC3_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_DHE_DSS_DES_192_CBC3_SHA,
+            SSL3_RFC_DHE_DSS_DES_192_CBC3_SHA,
+            SSL3_CK_DHE_DSS_DES_192_CBC3_SHA,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_DHE_RSA_DES_192_CBC3_SHA,
+            SSL3_RFC_DHE_RSA_DES_192_CBC3_SHA,
+            SSL3_CK_DHE_RSA_DES_192_CBC3_SHA,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_ADH_DES_192_CBC_SHA,
+            SSL3_RFC_ADH_DES_192_CBC_SHA,
+            SSL3_CK_ADH_DES_192_CBC_SHA,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+       //#endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_128_SHA,
+            TLS1_RFC_RSA_WITH_AES_128_SHA,
+            TLS1_CK_RSA_WITH_AES_128_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_AES_128_SHA,
+            TLS1_RFC_DHE_DSS_WITH_AES_128_SHA,
+            TLS1_CK_DHE_DSS_WITH_AES_128_SHA,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_128_SHA,
+            TLS1_RFC_DHE_RSA_WITH_AES_128_SHA,
+            TLS1_CK_DHE_RSA_WITH_AES_128_SHA,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_AES_128_SHA,
+            TLS1_RFC_ADH_WITH_AES_128_SHA,
+            TLS1_CK_ADH_WITH_AES_128_SHA,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_256_SHA,
+            TLS1_RFC_RSA_WITH_AES_256_SHA,
+            TLS1_CK_RSA_WITH_AES_256_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_AES_256_SHA,
+            TLS1_RFC_DHE_DSS_WITH_AES_256_SHA,
+            TLS1_CK_DHE_DSS_WITH_AES_256_SHA,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_256_SHA,
+            TLS1_RFC_DHE_RSA_WITH_AES_256_SHA,
+            TLS1_CK_DHE_RSA_WITH_AES_256_SHA,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_AES_256_SHA,
+            TLS1_RFC_ADH_WITH_AES_256_SHA,
+            TLS1_CK_ADH_WITH_AES_256_SHA,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_NULL_SHA256,
+            TLS1_RFC_RSA_WITH_NULL_SHA256,
+            TLS1_CK_RSA_WITH_NULL_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_128_SHA256,
+            TLS1_RFC_RSA_WITH_AES_128_SHA256,
+            TLS1_CK_RSA_WITH_AES_128_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_256_SHA256,
+            TLS1_RFC_RSA_WITH_AES_256_SHA256,
+            TLS1_CK_RSA_WITH_AES_256_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_AES_128_SHA256,
+            TLS1_RFC_DHE_DSS_WITH_AES_128_SHA256,
+            TLS1_CK_DHE_DSS_WITH_AES_128_SHA256,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_128_SHA256,
+            TLS1_RFC_DHE_RSA_WITH_AES_128_SHA256,
+            TLS1_CK_DHE_RSA_WITH_AES_128_SHA256,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_AES_256_SHA256,
+            TLS1_RFC_DHE_DSS_WITH_AES_256_SHA256,
+            TLS1_CK_DHE_DSS_WITH_AES_256_SHA256,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_AES256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_256_SHA256,
+            TLS1_RFC_DHE_RSA_WITH_AES_256_SHA256,
+            TLS1_CK_DHE_RSA_WITH_AES_256_SHA256,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_AES_128_SHA256,
+            TLS1_RFC_ADH_WITH_AES_128_SHA256,
+            TLS1_CK_ADH_WITH_AES_128_SHA256,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_AES_256_SHA256,
+            TLS1_RFC_ADH_WITH_AES_256_SHA256,
+            TLS1_CK_ADH_WITH_AES_256_SHA256,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_AES256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_RSA_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_RSA_WITH_AES_128_GCM_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_RSA_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_RSA_WITH_AES_256_GCM_SHA384,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_DHE_RSA_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_DHE_RSA_WITH_AES_128_GCM_SHA256,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_DHE_RSA_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_DHE_RSA_WITH_AES_256_GCM_SHA384,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_DHE_DSS_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_DHE_DSS_WITH_AES_128_GCM_SHA256,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_DHE_DSS_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_DHE_DSS_WITH_AES_256_GCM_SHA384,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_ADH_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_ADH_WITH_AES_128_GCM_SHA256,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_ADH_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_ADH_WITH_AES_256_GCM_SHA384,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_128_CCM,
+            TLS1_RFC_RSA_WITH_AES_128_CCM,
+            TLS1_CK_RSA_WITH_AES_128_CCM,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES128CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_256_CCM,
+            TLS1_RFC_RSA_WITH_AES_256_CCM,
+            TLS1_CK_RSA_WITH_AES_256_CCM,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES256CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_128_CCM,
+            TLS1_RFC_DHE_RSA_WITH_AES_128_CCM,
+            TLS1_CK_DHE_RSA_WITH_AES_128_CCM,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES128CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_256_CCM,
+            TLS1_RFC_DHE_RSA_WITH_AES_256_CCM,
+            TLS1_CK_DHE_RSA_WITH_AES_256_CCM,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES256CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_128_CCM_8,
+            TLS1_RFC_RSA_WITH_AES_128_CCM_8,
+            TLS1_CK_RSA_WITH_AES_128_CCM_8,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES128CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_AES_256_CCM_8,
+            TLS1_RFC_RSA_WITH_AES_256_CCM_8,
+            TLS1_CK_RSA_WITH_AES_256_CCM_8,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_AES256CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_128_CCM_8,
+            TLS1_RFC_DHE_RSA_WITH_AES_128_CCM_8,
+            TLS1_CK_DHE_RSA_WITH_AES_128_CCM_8,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES128CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_AES_256_CCM_8,
+            TLS1_RFC_DHE_RSA_WITH_AES_256_CCM_8,
+            TLS1_CK_DHE_RSA_WITH_AES_256_CCM_8,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_AES256CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_128_CCM,
+            TLS1_RFC_PSK_WITH_AES_128_CCM,
+            TLS1_CK_PSK_WITH_AES_128_CCM,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES128CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_256_CCM,
+            TLS1_RFC_PSK_WITH_AES_256_CCM,
+            TLS1_CK_PSK_WITH_AES_256_CCM,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES256CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_128_CCM,
+            TLS1_RFC_DHE_PSK_WITH_AES_128_CCM,
+            TLS1_CK_DHE_PSK_WITH_AES_128_CCM,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES128CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_256_CCM,
+            TLS1_RFC_DHE_PSK_WITH_AES_256_CCM,
+            TLS1_CK_DHE_PSK_WITH_AES_256_CCM,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES256CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_128_CCM_8,
+            TLS1_RFC_PSK_WITH_AES_128_CCM_8,
+            TLS1_CK_PSK_WITH_AES_128_CCM_8,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES128CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_256_CCM_8,
+            TLS1_RFC_PSK_WITH_AES_256_CCM_8,
+            TLS1_CK_PSK_WITH_AES_256_CCM_8,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES256CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_128_CCM_8,
+            TLS1_RFC_DHE_PSK_WITH_AES_128_CCM_8,
+            TLS1_CK_DHE_PSK_WITH_AES_128_CCM_8,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES128CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_256_CCM_8,
+            TLS1_RFC_DHE_PSK_WITH_AES_256_CCM_8,
+            TLS1_CK_DHE_PSK_WITH_AES_256_CCM_8,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES256CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CCM,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_CCM,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_128_CCM,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES128CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CCM,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_CCM,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_256_CCM,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES256CCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CCM_8,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_CCM_8,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_128_CCM_8,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES128CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CCM_8,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_CCM_8,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_256_CCM_8,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES256CCM8,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA,
+            TLS1_RFC_ECDHE_ECDSA_WITH_NULL_SHA,
+            TLS1_CK_ECDHE_ECDSA_WITH_NULL_SHA,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_eNULL,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
+            TLS1_RFC_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
+            TLS1_CK_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_3DES,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+       //# endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES128,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES256,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA,
+            TLS1_RFC_ECDHE_RSA_WITH_NULL_SHA,
+            TLS1_CK_ECDHE_RSA_WITH_NULL_SHA,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
+            TLS1_RFC_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
+            TLS1_CK_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_3DES,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+       //# endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+            TLS1_CK_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+            TLS1_CK_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDH_anon_WITH_NULL_SHA,
+            TLS1_RFC_ECDH_anon_WITH_NULL_SHA,
+            TLS1_CK_ECDH_anon_WITH_NULL_SHA,
+            SSL_kECDHE,
+            SSL_aNULL,
+            SSL_eNULL,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDH_anon_WITH_DES_192_CBC3_SHA,
+            TLS1_RFC_ECDH_anon_WITH_DES_192_CBC3_SHA,
+            TLS1_CK_ECDH_anon_WITH_DES_192_CBC3_SHA,
+            SSL_kECDHE,
+            SSL_aNULL,
+            SSL_3DES,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+       //# endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDH_anon_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_ECDH_anon_WITH_AES_128_CBC_SHA,
+            TLS1_CK_ECDH_anon_WITH_AES_128_CBC_SHA,
+            SSL_kECDHE,
+            SSL_aNULL,
+            SSL_AES128,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDH_anon_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_ECDH_anon_WITH_AES_256_CBC_SHA,
+            TLS1_CK_ECDH_anon_WITH_AES_256_CBC_SHA,
+            SSL_kECDHE,
+            SSL_aNULL,
+            SSL_AES256,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_SHA256,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_SHA256,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_128_SHA256,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_SHA384,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_SHA384,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_256_SHA384,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES256,
+            SSL_SHA384,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_AES_128_SHA256,
+            TLS1_RFC_ECDHE_RSA_WITH_AES_128_SHA256,
+            TLS1_CK_ECDHE_RSA_WITH_AES_128_SHA256,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_AES_256_SHA384,
+            TLS1_RFC_ECDHE_RSA_WITH_AES_256_SHA384,
+            TLS1_CK_ECDHE_RSA_WITH_AES_256_SHA384,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA384,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_NULL_SHA,
+            TLS1_RFC_PSK_WITH_NULL_SHA,
+            TLS1_CK_PSK_WITH_NULL_SHA,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_NULL_SHA,
+            TLS1_RFC_DHE_PSK_WITH_NULL_SHA,
+            TLS1_CK_DHE_PSK_WITH_NULL_SHA,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_NULL_SHA,
+            TLS1_RFC_RSA_PSK_WITH_NULL_SHA,
+            TLS1_CK_RSA_PSK_WITH_NULL_SHA,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0
+            ));
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_PSK_WITH_3DES_EDE_CBC_SHA,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168
+            ));
+       //# endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_CK_PSK_WITH_AES_128_CBC_SHA,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_CK_PSK_WITH_AES_256_CBC_SHA,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256
+            ));
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_DHE_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_DHE_PSK_WITH_3DES_EDE_CBC_SHA,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168,
+            ));
+       # endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_DHE_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_CK_DHE_PSK_WITH_AES_128_CBC_SHA,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_DHE_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_CK_DHE_PSK_WITH_AES_256_CBC_SHA,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+       # ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_RSA_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_RSA_PSK_WITH_3DES_EDE_CBC_SHA,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168,
+            ));
+       # endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_RSA_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_CK_RSA_PSK_WITH_AES_128_CBC_SHA,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_RSA_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_CK_RSA_PSK_WITH_AES_256_CBC_SHA,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_PSK_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_PSK_WITH_AES_128_GCM_SHA256,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_PSK_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_PSK_WITH_AES_256_GCM_SHA384,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_DHE_PSK_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_DHE_PSK_WITH_AES_128_GCM_SHA256,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_DHE_PSK_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_DHE_PSK_WITH_AES_256_GCM_SHA384,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_AES_128_GCM_SHA256,
+            TLS1_RFC_RSA_PSK_WITH_AES_128_GCM_SHA256,
+            TLS1_CK_RSA_PSK_WITH_AES_128_GCM_SHA256,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_AES128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_AES_256_GCM_SHA384,
+            TLS1_RFC_RSA_PSK_WITH_AES_256_GCM_SHA384,
+            TLS1_CK_RSA_PSK_WITH_AES_256_GCM_SHA384,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_AES256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_RFC_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_CK_PSK_WITH_AES_128_CBC_SHA256,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_RFC_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_CK_PSK_WITH_AES_256_CBC_SHA384,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_AES256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_NULL_SHA256,
+            TLS1_RFC_PSK_WITH_NULL_SHA256,
+            TLS1_CK_PSK_WITH_NULL_SHA256,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_NULL_SHA384,
+            TLS1_RFC_PSK_WITH_NULL_SHA384,
+            TLS1_CK_PSK_WITH_NULL_SHA384,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_RFC_DHE_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_CK_DHE_PSK_WITH_AES_128_CBC_SHA256,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_RFC_DHE_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_CK_DHE_PSK_WITH_AES_256_CBC_SHA384,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_AES256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_NULL_SHA256,
+            TLS1_RFC_DHE_PSK_WITH_NULL_SHA256,
+            TLS1_CK_DHE_PSK_WITH_NULL_SHA256,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_NULL_SHA384,
+            TLS1_RFC_DHE_PSK_WITH_NULL_SHA384,
+            TLS1_CK_DHE_PSK_WITH_NULL_SHA384,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_RFC_RSA_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_CK_RSA_PSK_WITH_AES_128_CBC_SHA256,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_RFC_RSA_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_CK_RSA_PSK_WITH_AES_256_CBC_SHA384,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_NULL_SHA256,
+            TLS1_RFC_RSA_PSK_WITH_NULL_SHA256,
+            TLS1_CK_RSA_PSK_WITH_NULL_SHA256,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_NULL_SHA384,
+            TLS1_RFC_RSA_PSK_WITH_NULL_SHA384,
+            TLS1_CK_RSA_PSK_WITH_NULL_SHA384,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_eNULL,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            0,
+            0,
+            ));
+       #  ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_3DES,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168,
+            ));
+       #  endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_ECDHE_PSK_WITH_AES_128_CBC_SHA,
+            TLS1_CK_ECDHE_PSK_WITH_AES_128_CBC_SHA,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_AES128,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_ECDHE_PSK_WITH_AES_256_CBC_SHA,
+            TLS1_CK_ECDHE_PSK_WITH_AES_256_CBC_SHA,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_AES256,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_RFC_ECDHE_PSK_WITH_AES_128_CBC_SHA256,
+            TLS1_CK_ECDHE_PSK_WITH_AES_128_CBC_SHA256,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_AES128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_RFC_ECDHE_PSK_WITH_AES_256_CBC_SHA384,
+            TLS1_CK_ECDHE_PSK_WITH_AES_256_CBC_SHA384,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_AES256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_NULL_SHA,
+            TLS1_RFC_ECDHE_PSK_WITH_NULL_SHA,
+            TLS1_CK_ECDHE_PSK_WITH_NULL_SHA,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_NULL_SHA256,
+            TLS1_RFC_ECDHE_PSK_WITH_NULL_SHA256,
+            TLS1_CK_ECDHE_PSK_WITH_NULL_SHA256,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_NULL_SHA384,
+            TLS1_RFC_ECDHE_PSK_WITH_NULL_SHA384,
+            TLS1_CK_ECDHE_PSK_WITH_NULL_SHA384,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_eNULL,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_STRONG_NONE | SSL_FIPS,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            0,
+            0,
+            ));
+
+       # ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_SRP_SHA_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_SRP_SHA_WITH_3DES_EDE_CBC_SHA,
+            SSL_kSRP,
+            SSL_aSRP,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA,
+            SSL_kSRP,
+            SSL_aRSA,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA,
+            TLS1_RFC_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA,
+            TLS1_CK_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA,
+            SSL_kSRP,
+            SSL_aDSS,
+            SSL_3DES,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            112,
+            168,
+            ));
+       # endif
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_SRP_SHA_WITH_AES_128_CBC_SHA,
+            TLS1_CK_SRP_SHA_WITH_AES_128_CBC_SHA,
+            SSL_kSRP,
+            SSL_aSRP,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_RSA_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_SRP_SHA_RSA_WITH_AES_128_CBC_SHA,
+            TLS1_CK_SRP_SHA_RSA_WITH_AES_128_CBC_SHA,
+            SSL_kSRP,
+            SSL_aRSA,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_DSS_WITH_AES_128_CBC_SHA,
+            TLS1_RFC_SRP_SHA_DSS_WITH_AES_128_CBC_SHA,
+            TLS1_CK_SRP_SHA_DSS_WITH_AES_128_CBC_SHA,
+            SSL_kSRP,
+            SSL_aDSS,
+            SSL_AES128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_SRP_SHA_WITH_AES_256_CBC_SHA,
+            TLS1_CK_SRP_SHA_WITH_AES_256_CBC_SHA,
+            SSL_kSRP,
+            SSL_aSRP,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_RSA_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_SRP_SHA_RSA_WITH_AES_256_CBC_SHA,
+            TLS1_CK_SRP_SHA_RSA_WITH_AES_256_CBC_SHA,
+            SSL_kSRP,
+            SSL_aRSA,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_SRP_SHA_DSS_WITH_AES_256_CBC_SHA,
+            TLS1_RFC_SRP_SHA_DSS_WITH_AES_256_CBC_SHA,
+            TLS1_CK_SRP_SHA_DSS_WITH_AES_256_CBC_SHA,
+            SSL_kSRP,
+            SSL_aDSS,
+            SSL_AES256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+
+       #if !defined(OPENSSL_NO_CHACHA) && !defined(OPENSSL_NO_POLY1305)
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_DHE_RSA_WITH_CHACHA20_POLY1305,
+            TLS1_CK_DHE_RSA_WITH_CHACHA20_POLY1305,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+            TLS1_CK_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+            TLS1_CK_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_CK_PSK_WITH_CHACHA20_POLY1305,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_ECDHE_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_CK_ECDHE_PSK_WITH_CHACHA20_POLY1305,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_DHE_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_CK_DHE_PSK_WITH_CHACHA20_POLY1305,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_RFC_RSA_PSK_WITH_CHACHA20_POLY1305,
+            TLS1_CK_RSA_PSK_WITH_CHACHA20_POLY1305,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_CHACHA20POLY1305,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+       #endif                          /* !defined(OPENSSL_NO_CHACHA) &&
+                                        * !defined(OPENSSL_NO_POLY1305) */
+
+       #ifndef OPENSSL_NO_CAMELLIA
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kEDH,
+            SSL_aDSS,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kEDH,
+            SSL_aRSA,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_ADH_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_ADH_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kEDH,
+            SSL_aNULL,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_RFC_RSA_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_CK_RSA_WITH_CAMELLIA_256_CBC_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_CAMELLIA256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_RFC_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_CK_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256,
+            SSL_kEDH,
+            SSL_aDSS,
+            SSL_CAMELLIA256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_RFC_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_CK_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256,
+            SSL_kEDH,
+            SSL_aRSA,
+            SSL_CAMELLIA256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_RFC_ADH_WITH_CAMELLIA_256_CBC_SHA256,
+            TLS1_CK_ADH_WITH_CAMELLIA_256_CBC_SHA256,
+            SSL_kEDH,
+            SSL_aNULL,
+            SSL_CAMELLIA256,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_RFC_RSA_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_CK_RSA_WITH_CAMELLIA_256_CBC_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_CAMELLIA256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_RFC_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_CK_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_CAMELLIA256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_RFC_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_CK_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_CAMELLIA256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_RFC_ADH_WITH_CAMELLIA_256_CBC_SHA,
+            TLS1_CK_ADH_WITH_CAMELLIA_256_CBC_SHA,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_CAMELLIA256,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_RFC_RSA_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_CK_RSA_WITH_CAMELLIA_128_CBC_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_CAMELLIA128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_RFC_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_CK_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_CAMELLIA128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_RFC_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_CK_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_CAMELLIA128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_RFC_ADH_WITH_CAMELLIA_128_CBC_SHA,
+            TLS1_CK_ADH_WITH_CAMELLIA_128_CBC_SHA,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_CAMELLIA128,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_RFC_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_CK_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_CAMELLIA256,
+            SSL_SHA384,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_RFC_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_CK_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_CAMELLIA256,
+            SSL_SHA384,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_RFC_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_CK_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_CAMELLIA256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_RFC_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_CK_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_CAMELLIA256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_RFC_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_CK_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_CAMELLIA256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_RFC_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            TLS1_CK_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_CAMELLIA128,
+            SSL_SHA256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_RFC_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            TLS1_CK_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_CAMELLIA256,
+            SSL_SHA384,
+            TLS1_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+       #endif                          /* OPENSSL_NO_CAMELLIA */
+
+       #ifndef OPENSSL_NO_GOST
+           Ciphers.add(new Def(
+            1,
+            "GOST2001-GOST89-GOST89",
+            "TLS_GOSTR341001_WITH_28147_CNT_IMIT",
+            0x3000081,
+            SSL_kGOST,
+            SSL_aGOST01,
+            SSL_eGOST2814789CNT,
+            SSL_GOST89MAC,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_GOST94 | TLS1_PRF_GOST94 | TLS1_STREAM_MAC,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            "GOST2001-NULL-GOST94",
+            "TLS_GOSTR341001_WITH_NULL_GOSTR3411",
+            0x3000083,
+            SSL_kGOST,
+            SSL_aGOST01,
+            SSL_eNULL,
+            SSL_GOST94,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_STRONG_NONE,
+            SSL_HANDSHAKE_MAC_GOST94 | TLS1_PRF_GOST94,
+            0,
+            0,
+            ));
+           Ciphers.add(new Def(
+            1,
+            "GOST2012-GOST8912-GOST8912",
+            NULL,
+            0x0300ff85,
+            SSL_kGOST,
+            SSL_aGOST12 | SSL_aGOST01,
+            SSL_eGOST2814789CNT12,
+            SSL_GOST89MAC12,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_HIGH,
+            SSL_HANDSHAKE_MAC_GOST12_256 | TLS1_PRF_GOST12_256 | TLS1_STREAM_MAC,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            "GOST2012-NULL-GOST12",
+            NULL,
+            0x0300ff87,
+            SSL_kGOST,
+            SSL_aGOST12 | SSL_aGOST01,
+            SSL_eNULL,
+            SSL_GOST12_256,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_STRONG_NONE,
+            SSL_HANDSHAKE_MAC_GOST12_256 | TLS1_PRF_GOST12_256 | TLS1_STREAM_MAC,
+            0,
+            0,
+            ));
+       #endif                          /* OPENSSL_NO_GOST */
+
+       #ifndef OPENSSL_NO_IDEA
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_RSA_IDEA_128_SHA,
+            SSL3_RFC_RSA_IDEA_128_SHA,
+            SSL3_CK_RSA_IDEA_128_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_IDEA,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_1_VERSION,
+            DTLS1_BAD_VER, DTLS1_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+       #endif
+
+       #ifndef OPENSSL_NO_SEED
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_SEED_SHA,
+            TLS1_RFC_RSA_WITH_SEED_SHA,
+            TLS1_CK_RSA_WITH_SEED_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_SEED,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_SEED_SHA,
+            TLS1_RFC_DHE_DSS_WITH_SEED_SHA,
+            TLS1_CK_DHE_DSS_WITH_SEED_SHA,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_SEED,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_SEED_SHA,
+            TLS1_RFC_DHE_RSA_WITH_SEED_SHA,
+            TLS1_CK_DHE_RSA_WITH_SEED_SHA,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_SEED,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ADH_WITH_SEED_SHA,
+            TLS1_RFC_ADH_WITH_SEED_SHA,
+            TLS1_CK_ADH_WITH_SEED_SHA,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_SEED,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            DTLS1_BAD_VER, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+       #endif                          /* OPENSSL_NO_SEED */
+
+       #ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_RSA_RC4_128_MD5,
+            SSL3_RFC_RSA_RC4_128_MD5,
+            SSL3_CK_RSA_RC4_128_MD5,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_RC4,
+            SSL_MD5,
+            SSL3_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_RSA_RC4_128_SHA,
+            SSL3_RFC_RSA_RC4_128_SHA,
+            SSL3_CK_RSA_RC4_128_SHA,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_RC4,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            SSL3_TXT_ADH_RC4_128_MD5,
+            SSL3_RFC_ADH_RC4_128_MD5,
+            SSL3_CK_ADH_RC4_128_MD5,
+            SSL_kDHE,
+            SSL_aNULL,
+            SSL_RC4,
+            SSL_MD5,
+            SSL3_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_PSK_WITH_RC4_128_SHA,
+            TLS1_RFC_ECDHE_PSK_WITH_RC4_128_SHA,
+            TLS1_CK_ECDHE_PSK_WITH_RC4_128_SHA,
+            SSL_kECDHEPSK,
+            SSL_aPSK,
+            SSL_RC4,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDH_anon_WITH_RC4_128_SHA,
+            TLS1_RFC_ECDH_anon_WITH_RC4_128_SHA,
+            TLS1_CK_ECDH_anon_WITH_RC4_128_SHA,
+            SSL_kECDHE,
+            SSL_aNULL,
+            SSL_RC4,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA,
+            TLS1_RFC_ECDHE_ECDSA_WITH_RC4_128_SHA,
+            TLS1_CK_ECDHE_ECDSA_WITH_RC4_128_SHA,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_RC4,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA,
+            TLS1_RFC_ECDHE_RSA_WITH_RC4_128_SHA,
+            TLS1_CK_ECDHE_RSA_WITH_RC4_128_SHA,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_RC4,
+            SSL_SHA1,
+            TLS1_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_RC4_128_SHA,
+            TLS1_RFC_PSK_WITH_RC4_128_SHA,
+            TLS1_CK_PSK_WITH_RC4_128_SHA,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_RC4,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_RC4_128_SHA,
+            TLS1_RFC_RSA_PSK_WITH_RC4_128_SHA,
+            TLS1_CK_RSA_PSK_WITH_RC4_128_SHA,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_RC4,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_RC4_128_SHA,
+            TLS1_RFC_DHE_PSK_WITH_RC4_128_SHA,
+            TLS1_CK_DHE_PSK_WITH_RC4_128_SHA,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_RC4,
+            SSL_SHA1,
+            SSL3_VERSION, TLS1_2_VERSION,
+            0, 0,
+            SSL_NOT_DEFAULT | SSL_MEDIUM,
+            SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
+            128,
+            128,
+            ));
+       #endif                          /* OPENSSL_NO_WEAK_SSL_CIPHERS */
+
+       #ifndef OPENSSL_NO_ARIA
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_RSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_RSA_WITH_ARIA_128_GCM_SHA256,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_RSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_RSA_WITH_ARIA_256_GCM_SHA384,
+            SSL_kRSA,
+            SSL_aRSA,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_DHE_RSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_DHE_RSA_WITH_ARIA_128_GCM_SHA256,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_RSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_DHE_RSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_DHE_RSA_WITH_ARIA_256_GCM_SHA384,
+            SSL_kDHE,
+            SSL_aRSA,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_DHE_DSS_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_DHE_DSS_WITH_ARIA_128_GCM_SHA256,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_DSS_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_DHE_DSS_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_DHE_DSS_WITH_ARIA_256_GCM_SHA384,
+            SSL_kDHE,
+            SSL_aDSS,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_ECDHE_ECDSA_WITH_ARIA_128_GCM_SHA256,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_ECDHE_ECDSA_WITH_ARIA_256_GCM_SHA384,
+            SSL_kECDHE,
+            SSL_aECDSA,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_ECDHE_RSA_WITH_ARIA_128_GCM_SHA256,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_ECDHE_RSA_WITH_ARIA_256_GCM_SHA384,
+            SSL_kECDHE,
+            SSL_aRSA,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_PSK_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_PSK_WITH_ARIA_128_GCM_SHA256,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_PSK_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_PSK_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_PSK_WITH_ARIA_256_GCM_SHA384,
+            SSL_kPSK,
+            SSL_aPSK,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_DHE_PSK_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_DHE_PSK_WITH_ARIA_128_GCM_SHA256,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_DHE_PSK_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_DHE_PSK_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_DHE_PSK_WITH_ARIA_256_GCM_SHA384,
+            SSL_kDHEPSK,
+            SSL_aPSK,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_ARIA_128_GCM_SHA256,
+            TLS1_RFC_RSA_PSK_WITH_ARIA_128_GCM_SHA256,
+            TLS1_CK_RSA_PSK_WITH_ARIA_128_GCM_SHA256,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_ARIA128GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+            128,
+            128,
+            ));
+           Ciphers.add(new Def(
+            1,
+            TLS1_TXT_RSA_PSK_WITH_ARIA_256_GCM_SHA384,
+            TLS1_RFC_RSA_PSK_WITH_ARIA_256_GCM_SHA384,
+            TLS1_CK_RSA_PSK_WITH_ARIA_256_GCM_SHA384,
+            SSL_kRSAPSK,
+            SSL_aRSA,
+            SSL_ARIA256GCM,
+            SSL_AEAD,
+            TLS1_2_VERSION, TLS1_2_VERSION,
+            DTLS1_2_VERSION, DTLS1_2_VERSION,
+            SSL_NOT_DEFAULT | SSL_HIGH,
+            SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
+            256,
+            256,
+            ));
+
         /* Cipher 01 */
+        
+        
         Ciphers.add(new Def(
                             1,
                             SSL3_TXT_RSA_NULL_MD5,
