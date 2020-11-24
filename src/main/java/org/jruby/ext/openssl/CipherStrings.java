@@ -166,13 +166,22 @@ public class CipherStrings {
 
     public final static String SSL_TXT_aRSA = "aRSA";
     public final static String SSL_TXT_aDSS = "aDSS";
-    public final static String SSL_TXT_aDH = "aDH";
+    public final static String SSL_TXT_aDH = "aDH";/* this cipher class has been removed */
+    public final static String SSL_TXT_aECDH           = "aECDH";/* this cipher class has been removed */
+    public final static String SSL_TXT_aECDSA          = "aECDSA";
+    public final static String SSL_TXT_aPSK            = "aPSK";
+    public final static String SSL_TXT_aGOST94         = "aGOST94";
+    public final static String SSL_TXT_aGOST01         = "aGOST01";
+    public final static String SSL_TXT_aGOST12         = "aGOST12";
+    public final static String SSL_TXT_aGOST           = "aGOST";
+    public final static String SSL_TXT_aSRP            = "aSRP";
     public final static String SSL_TXT_DSS = "DSS";
     public final static String SSL_TXT_DH = "DH";
+    public final static String SSL_TXT_DHE = "DHE";
     public final static String SSL_TXT_EDH = "EDH";
     public final static String SSL_TXT_ADH = "ADH";
     public final static String SSL_TXT_RSA = "RSA";
-    
+
     public final static String SSL_TXT_ECDH            = "ECDH";
     public final static String SSL_TXT_EECDH           = "EECDH";/* alias for ECDHE" */
     public final static String SSL_TXT_ECDHE           = "ECDHE";/* same as "kECDHE:-AECDH" */
@@ -187,7 +196,23 @@ public class CipherStrings {
     public final static String SSL_TXT_RC4 = "RC4";
     public final static String SSL_TXT_RC2 = "RC2";
     public final static String SSL_TXT_IDEA = "IDEA";
-    public final static String SSL_TXT_AES = "AES";
+    public final static String SSL_TXT_SEED           = "SEED";
+    public final static String SSL_TXT_AES128         = "AES128";
+    public final static String SSL_TXT_AES256         = "AES256";
+    public final static String SSL_TXT_AES            = "AES";
+    public final static String SSL_TXT_AES_GCM        = "AESGCM";
+    public final static String SSL_TXT_AES_CCM        = "AESCCM";
+    public final static String SSL_TXT_AES_CCM_8      = "AESCCM8";
+    public final static String SSL_TXT_CAMELLIA128    = "CAMELLIA128";
+    public final static String SSL_TXT_CAMELLIA256    = "CAMELLIA256";
+    public final static String SSL_TXT_CAMELLIA       = "CAMELLIA";
+    public final static String SSL_TXT_CHACHA20       = "CHACHA20";
+    public final static String SSL_TXT_GOST           = "GOST89";
+    public final static String SSL_TXT_ARIA           = "ARIA";
+    public final static String SSL_TXT_ARIA_GCM       = "ARIAGCM";
+    public final static String SSL_TXT_ARIA128        = "ARIA128";
+    public final static String SSL_TXT_ARIA256        = "ARIA256";
+
     public final static String SSL_TXT_MD5 = "MD5";
     public final static String SSL_TXT_SHA1 = "SHA1";
     public final static String SSL_TXT_SHA = "SHA";
@@ -211,22 +236,52 @@ public class CipherStrings {
     public final static long SSL_kRSA = 0x00000001L;
     public final static long SSL_kDHE = 0x00000002L;
     public final static long SSL_kEDH = SSL_kDHE;       //synonym
+    public final static long SSL_kECDHE              = 0x00000004;
+    public final static long SSL_kEECDH              = SSL_kECDHE;       //synonym
+    public final static long SSL_kPSK                = 0x00000008;
+    public final static long SSL_kGOST               = 0x00000010;
+    public final static long SSL_kSRP                = 0x00000020;
+
+    public final static long SSL_kRSAPSK             = 0x00000040;
+    public final static long SSL_kECDHEPSK           = 0x00000080;
+    public final static long SSL_kDHEPSK             = 0x00000100;
+
+    /* all PSK */
+
+    public final static long SSL_PSK     = (SSL_kPSK | SSL_kRSAPSK | SSL_kECDHEPSK | SSL_kDHEPSK);
+
+    /* Any appropriate key exchange algorithm (for TLS 1.3 ciphersuites) */
+    public final static long SSL_kANY                = 0x00000000;
+
+    public final static long SSL_aRSA                = 0x00000001;
+    public final static long SSL_aDSS                = 0x00000002;
+    public final static long SSL_aNULL               = 0x00000004;
+    public final static long SSL_aECDSA              = 0x00000008;
+    public final static long SSL_aPSK                = 0x00000010;
+    public final static long SSL_aGOST01             = 0x00000020;
+    public final static long SSL_aSRP                = 0x00000040;
+    public final static long SSL_aGOST12             = 0x00000080;
+    /* Any appropriate signature auth (for TLS 1.3 ciphersuites) */
+    public final static long SSL_aANY                = 0x00000000;
+    /* All bits requiring a certificate */
+    public final static long SSL_aCERT = (SSL_aRSA | SSL_aDSS | SSL_aECDSA | SSL_aGOST01 | SSL_aGOST12);
+
     public final static long SSL_kDHr = 0x00000002L;
     public final static long SSL_kDHd = 0x00000004L;
     public final static long SSL_kFZA = 0x00000008L;
     public final static long SSL_kKRB5 = 0x00000020L;
     public final static long SSL_kECDH = 0x00000040L;
-    public final static long SSL_kECDHE = 0x00000080L;
-    public final static long SSL_aNULL = 0x00000800L;
+//    public final static long SSL_kECDHE = 0x00000080L;
+//    public final static long SSL_aNULL = 0x00000800L;
     public final static long SSL_AUTH_MASK = 0x00007F00L;
     public final static long SSL_EDH = (SSL_kEDH|(SSL_AUTH_MASK^SSL_aNULL));
-    public final static long SSL_aRSA = 0x00000100L;
-    public final static long SSL_aDSS = 0x00000200L;
+//    public final static long SSL_aRSA = 0x00000100L;
+//    public final static long SSL_aDSS = 0x00000200L;
     public final static long SSL_DSS = SSL_aDSS;
     public final static long SSL_aFZA = 0x00000400L;
     public final static long SSL_aDH = 0x00001000L;
     public final static long SSL_aKRB5 = 0x00002000L;
-    public final static long SSL_aECDSA = 0x00004000L;
+//    public final static long SSL_aECDSA = 0x00004000L;
 //    public final static long SSL_eNULL = 0x00200000L;
     public final static long SSL_eFZA = 0x00100000L;
     @Deprecated public final static long SSL_NULL = 0x00000020;
@@ -850,6 +905,10 @@ struct ssl_cipher_st {
         Def def = new Def(valid, name, stdname, id, algorithm_mkey);
         Definitions.put(name, def);
     }
+    private static void def(int valid, String name, String stdname, long id, long algorithm_mkey, long algorithm_auth){
+        Def def = new Def(valid, name, stdname, id, algorithm_mkey, algorithm_auth, 0, 0);
+        Definitions.put(name, def);
+    }
     private static void def(int valid, String name, String stdname, long id, long algorithm_mkey, long algorithm_auth,
             long algorithm_enc){
         Def def = new Def(valid, name, stdname, id, algorithm_mkey, algorithm_auth, algorithm_enc, 0);
@@ -919,10 +978,69 @@ struct ssl_cipher_st {
     {0, SSL_TXT_kGOST, NULL, 0, SSL_kGOST},
 
          */
-        
+
         def(0, SSL_TXT_kEECDH, null, 0,SSL_kECDHE);
         def(0, SSL_TXT_kECDHE, null, 0,SSL_kECDHE);
         def(0, SSL_TXT_ECDH, null, 0,SSL_kECDHE);
+        
+        def(0, SSL_TXT_kPSK, null, 0, SSL_kPSK);
+        def(0, SSL_TXT_kRSAPSK, null, 0, SSL_kRSAPSK);
+        def(0, SSL_TXT_kECDHEPSK, null, 0, SSL_kECDHEPSK);
+        def(0, SSL_TXT_kDHEPSK, null, 0, SSL_kDHEPSK);
+        def(0, SSL_TXT_kSRP, null, 0, SSL_kSRP);
+        def(0, SSL_TXT_kGOST, null, 0, SSL_kGOST);
+
+        /* server authentication aliases */
+        def(0, SSL_TXT_aRSA, null, 0, 0, SSL_aRSA);
+        def(0, SSL_TXT_aDSS, null, 0, 0, SSL_aDSS);
+        def(0, SSL_TXT_DSS, null, 0, 0, SSL_aDSS);
+        def(0, SSL_TXT_aNULL, null, 0, 0, SSL_aNULL);
+        def(0, SSL_TXT_aECDSA, null, 0, 0, SSL_aECDSA);
+        def(0, SSL_TXT_ECDSA, null, 0, 0, SSL_aECDSA);
+        def(0, SSL_TXT_aPSK, null, 0, 0, SSL_aPSK);
+        def(0, SSL_TXT_aGOST01, null, 0, 0, SSL_aGOST01);
+        def(0, SSL_TXT_aGOST12, null, 0, 0, SSL_aGOST12);
+        def(0, SSL_TXT_aGOST, null, 0, 0, SSL_aGOST01 | SSL_aGOST12);
+        def(0, SSL_TXT_aSRP, null, 0, 0, SSL_aSRP);
+
+        /* aliases combining key exchange and server authentication */
+        def(0, SSL_TXT_EDH, null, 0, SSL_kDHE, ~SSL_aNULL);
+        def(0, SSL_TXT_DHE, null, 0, SSL_kDHE, ~SSL_aNULL);
+        def(0, SSL_TXT_EECDH, null, 0, SSL_kECDHE, ~SSL_aNULL);
+        def(0, SSL_TXT_ECDHE, null, 0, SSL_kECDHE, ~SSL_aNULL);
+        def(0, SSL_TXT_NULL, null, 0, 0, 0, SSL_eNULL);
+        def(0, SSL_TXT_RSA, null, 0, SSL_kRSA, SSL_aRSA);
+        def(0, SSL_TXT_ADH, null, 0, SSL_kDHE, SSL_aNULL);
+        def(0, SSL_TXT_AECDH, null, 0, SSL_kECDHE, SSL_aNULL);
+        def(0, SSL_TXT_PSK, null, 0, SSL_PSK);
+        def(0, SSL_TXT_SRP, null, 0, SSL_kSRP);
+
+        /* symmetric encryption aliases */
+        def(0, SSL_TXT_3DES, null, 0, 0, 0, SSL_3DES);
+        def(0, SSL_TXT_RC4, null, 0, 0, 0, SSL_RC4);
+        def(0, SSL_TXT_RC2, null, 0, 0, 0, SSL_RC2);
+        def(0, SSL_TXT_IDEA, null, 0, 0, 0, SSL_IDEA);
+        def(0, SSL_TXT_SEED, null, 0, 0, 0, SSL_SEED);
+        def(0, SSL_TXT_eNULL, null, 0, 0, 0, SSL_eNULL);
+        def(0, SSL_TXT_GOST, null, 0, 0, 0, SSL_eGOST2814789CNT | SSL_eGOST2814789CNT12);
+        def(0, SSL_TXT_AES128, null, 0, 0, 0,
+         SSL_AES128 | SSL_AES128GCM | SSL_AES128CCM | SSL_AES128CCM8);
+        def(0, SSL_TXT_AES256, null, 0, 0, 0,
+         SSL_AES256 | SSL_AES256GCM | SSL_AES256CCM | SSL_AES256CCM8);
+        def(0, SSL_TXT_AES, null, 0, 0, 0, SSL_AES);
+        def(0, SSL_TXT_AES_GCM, null, 0, 0, 0, SSL_AES128GCM | SSL_AES256GCM);
+        def(0, SSL_TXT_AES_CCM, null, 0, 0, 0,
+         SSL_AES128CCM | SSL_AES256CCM | SSL_AES128CCM8 | SSL_AES256CCM8);
+        def(0, SSL_TXT_AES_CCM_8, null, 0, 0, 0, SSL_AES128CCM8 | SSL_AES256CCM8);
+        def(0, SSL_TXT_CAMELLIA128, null, 0, 0, 0, SSL_CAMELLIA128);
+        def(0, SSL_TXT_CAMELLIA256, null, 0, 0, 0, SSL_CAMELLIA256);
+        def(0, SSL_TXT_CAMELLIA, null, 0, 0, 0, SSL_CAMELLIA);
+        def(0, SSL_TXT_CHACHA20, null, 0, 0, 0, SSL_CHACHA20);
+
+        def(0, SSL_TXT_ARIA, null, 0, 0, 0, SSL_ARIA);
+        def(0, SSL_TXT_ARIA_GCM, null, 0, 0, 0, SSL_ARIA128GCM | SSL_ARIA256GCM);
+        def(0, SSL_TXT_ARIA128, null, 0, 0, 0, SSL_ARIA128GCM);
+        def(0, SSL_TXT_ARIA256, null, 0, 0, 0, SSL_ARIA256GCM);
 
         Definitions.put(SSL_TXT_kDHr,new Def(0,SSL_TXT_kDHr,0,SSL_kDHr,  0,0,0,0,SSL_MKEY_MASK,0));
         Definitions.put(SSL_TXT_kDHd,new Def(0,SSL_TXT_kDHd,0,SSL_kDHd,  0,0,0,0,SSL_MKEY_MASK,0));
