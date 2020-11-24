@@ -1804,31 +1804,6 @@ struct ssl_cipher_st {
     static {
         Definitions = new HashMap<String, Def>( 48, 1 );
         // TODO review base on OpenSSL's static const SSL_CIPHER cipher_aliases[] ?!
-        // It seems that this list is based on OpenSSL 0.9.7
-        /*
-         * struct ssl_cipher_st {
-                uint32_t valid;
-                const char *name;           // text name 
-                const char *stdname;        // RFC name 
-                uint32_t id;                // id, 4 bytes, first is version 
-                uint32_t algorithm_mkey;    // key exchange algorithm 
-                uint32_t algorithm_auth;    // server authentication 
-                uint32_t algorithm_enc;     // symmetric encryption 
-                uint32_t algorithm_mac;     // symmetric authentication 
-         */
-        // {0, SSL_TXT_ALL, NULL, 0, 0, 0, ~SSL_eNULL},         1.1.1
-        //  {0,SSL_TXT_ALL, 0,SSL_ALL & ~SSL_eNULL, SSL_ALL ,0,0,0,SSL_ALL,SSL_ALL},  0.9.7
-        /*
-         *
-    {0, SSL_TXT_ALL, NULL, 0, 0, 0, ~SSL_eNULL},
-    {0, SSL_TXT_CMPALL, NULL, 0, 0, 0, SSL_eNULL},
-    {0, SSL_TXT_CMPDEF, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, SSL_NOT_DEFAULT},
-    {0, SSL_TXT_kRSA, NULL, 0, SSL_kRSA},
-    {0, SSL_TXT_kEDH, NULL, 0, SSL_kDHE},
-    {0, SSL_TXT_kDHE, NULL, 0, SSL_kDHE},
-    {0, SSL_TXT_DH, NULL, 0, SSL_kDHE},
-
-         */
         def(0,SSL_TXT_ALL, null, 0, 0, 0, ~SSL_eNULL);
         def(0,SSL_TXT_ALL, null, 0, 0, 0, SSL_eNULL);
         def(0,SSL_TXT_CMPDEF, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, SSL_NOT_DEFAULT);
@@ -1836,26 +1811,11 @@ struct ssl_cipher_st {
         def(0,SSL_TXT_kEDH, null, 0,SSL_kDHE);
         def(0,SSL_TXT_kEDH, null, 0,SSL_kDHE);
         def(0,SSL_TXT_DH, null, 0,SSL_kDHE);
-        
-        /*
-         * 
-    {0, SSL_TXT_kEECDH, NULL, 0, SSL_kECDHE},
-    {0, SSL_TXT_kECDHE, NULL, 0, SSL_kECDHE},
-    {0, SSL_TXT_ECDH, NULL, 0, SSL_kECDHE},
-
-    {0, SSL_TXT_kPSK, NULL, 0, SSL_kPSK},
-    {0, SSL_TXT_kRSAPSK, NULL, 0, SSL_kRSAPSK},
-    {0, SSL_TXT_kECDHEPSK, NULL, 0, SSL_kECDHEPSK},
-    {0, SSL_TXT_kDHEPSK, NULL, 0, SSL_kDHEPSK},
-    {0, SSL_TXT_kSRP, NULL, 0, SSL_kSRP},
-    {0, SSL_TXT_kGOST, NULL, 0, SSL_kGOST},
-
-         */
 
         def(0, SSL_TXT_kEECDH, null, 0,SSL_kECDHE);
         def(0, SSL_TXT_kECDHE, null, 0,SSL_kECDHE);
         def(0, SSL_TXT_ECDH, null, 0,SSL_kECDHE);
-        
+
         def(0, SSL_TXT_kPSK, null, 0, SSL_kPSK);
         def(0, SSL_TXT_kRSAPSK, null, 0, SSL_kRSAPSK);
         def(0, SSL_TXT_kECDHEPSK, null, 0, SSL_kECDHEPSK);
@@ -1945,39 +1905,6 @@ struct ssl_cipher_st {
          SSL_kDHE, SSL_aRSA, SSL_3DES, SSL_SHA1, 0, 0, 0, 0, SSL_HIGH | SSL_FIPS);
 
         final ArrayList<Def> Ciphers = new ArrayList<Def>( 96 );
-        /** OPENSSL 1.1.1 example:
-         * static SSL_CIPHER ssl3_ciphers[] = {
-            {
-             1,
-             SSL3_TXT_RSA_NULL_MD5,
-             SSL3_RFC_RSA_NULL_MD5,
-             SSL3_CK_RSA_NULL_MD5,
-             SSL_kRSA,
-             SSL_aRSA,
-             SSL_eNULL,
-             SSL_MD5,
-             SSL3_VERSION, TLS1_2_VERSION,
-             DTLS1_BAD_VER, DTLS1_2_VERSION,
-             SSL_STRONG_NONE,
-             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
-             0,
-             0,
-             },
-             
-            // OpenSSL up to 1.0.2u is "OR'ing" like below 
-            {
-            1,
-            SSL3_TXT_RSA_NULL_MD5,
-            SSL3_CK_RSA_NULL_MD5,
-            SSL_kRSA|SSL_aRSA|SSL_eNULL |SSL_MD5|SSL_SSLV3,
-            SSL_NOT_EXP|SSL_STRONG_NONE,
-            0,
-            0,
-            0,
-            SSL_ALL_CIPHERS,
-            SSL_ALL_STRENGTHS,
-            },
-         */
         Ciphers.add(new Def(
             1,
             SSL3_TXT_RSA_NULL_MD5,
@@ -3234,9 +3161,9 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             112,
-            168,
+            168
             ));
-       # endif
+       //# endif
            Ciphers.add(new Def(
             1,
             TLS1_TXT_DHE_PSK_WITH_AES_128_CBC_SHA,
@@ -3251,7 +3178,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3267,9 +3194,9 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
-       # ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
            Ciphers.add(new Def(
             1,
             TLS1_TXT_RSA_PSK_WITH_3DES_EDE_CBC_SHA,
@@ -3284,9 +3211,9 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             112,
-            168,
+            168
             ));
-       # endif
+       //# endif
            Ciphers.add(new Def(
             1,
             TLS1_TXT_RSA_PSK_WITH_AES_128_CBC_SHA,
@@ -3301,7 +3228,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3317,7 +3244,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3333,7 +3260,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3349,7 +3276,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3365,7 +3292,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3381,7 +3308,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3397,7 +3324,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3413,7 +3340,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3429,7 +3356,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3445,7 +3372,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3461,7 +3388,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3477,7 +3404,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3493,7 +3420,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3509,7 +3436,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3525,7 +3452,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3541,7 +3468,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3557,7 +3484,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3573,7 +3500,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3589,7 +3516,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3605,9 +3532,9 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             0,
-            0,
+            0
             ));
-       #  ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+       //#  ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
            Ciphers.add(new Def(
             1,
             TLS1_TXT_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA,
@@ -3622,9 +3549,9 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             112,
-            168,
+            168
             ));
-       #  endif
+       //#  endif
            Ciphers.add(new Def(
             1,
             TLS1_TXT_ECDHE_PSK_WITH_AES_128_CBC_SHA,
@@ -3639,7 +3566,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3655,7 +3582,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3671,7 +3598,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3687,7 +3614,7 @@ struct ssl_cipher_st {
             SSL_HIGH | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3703,7 +3630,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3719,7 +3646,7 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
@@ -3735,10 +3662,10 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE | SSL_FIPS,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             0,
-            0,
+            0
             ));
 
-       # ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+       //# ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
            Ciphers.add(new Def(
             1,
             TLS1_TXT_SRP_SHA_WITH_3DES_EDE_CBC_SHA,
@@ -3753,7 +3680,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             112,
-            168,
+            168
             ));
            Ciphers.add(new Def(
             1,
@@ -3769,7 +3696,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             112,
-            168,
+            168
             ));
            Ciphers.add(new Def(
             1,
@@ -3785,9 +3712,9 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             112,
-            168,
+            168
             ));
-       # endif
+       //# endif
            Ciphers.add(new Def(
             1,
             TLS1_TXT_SRP_SHA_WITH_AES_128_CBC_SHA,
@@ -3802,7 +3729,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3818,7 +3745,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3834,7 +3761,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -3850,7 +3777,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3866,7 +3793,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3882,10 +3809,10 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
 
-       #if !defined(OPENSSL_NO_CHACHA) && !defined(OPENSSL_NO_POLY1305)
+       //#if !defined(OPENSSL_NO_CHACHA) && !defined(OPENSSL_NO_POLY1305)
            Ciphers.add(new Def(
             1,
             TLS1_TXT_DHE_RSA_WITH_CHACHA20_POLY1305,
@@ -3900,7 +3827,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3916,7 +3843,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3932,7 +3859,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3948,7 +3875,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3964,7 +3891,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3980,7 +3907,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -3996,12 +3923,12 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
-       #endif                          /* !defined(OPENSSL_NO_CHACHA) &&
-                                        * !defined(OPENSSL_NO_POLY1305) */
+       //#endif                          /* !defined(OPENSSL_NO_CHACHA) &&
+       //                               * !defined(OPENSSL_NO_POLY1305) */
 
-       #ifndef OPENSSL_NO_CAMELLIA
+       //#ifndef OPENSSL_NO_CAMELLIA
            Ciphers.add(new Def(
             1,
             TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA256,
@@ -4016,7 +3943,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4032,7 +3959,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4048,7 +3975,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4064,7 +3991,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4080,7 +4007,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4096,7 +4023,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4112,7 +4039,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4128,7 +4055,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4144,7 +4071,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4160,7 +4087,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4176,7 +4103,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4192,7 +4119,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4208,7 +4135,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4224,7 +4151,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4240,7 +4167,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4256,7 +4183,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4272,7 +4199,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4288,7 +4215,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4304,7 +4231,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4320,7 +4247,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4336,7 +4263,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4352,7 +4279,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4368,7 +4295,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4384,7 +4311,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4400,7 +4327,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4416,7 +4343,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4432,7 +4359,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4448,11 +4375,11 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
-       #endif                          /* OPENSSL_NO_CAMELLIA */
+       //#endif                          /* OPENSSL_NO_CAMELLIA */
 
-       #ifndef OPENSSL_NO_GOST
+       //#ifndef OPENSSL_NO_GOST
            Ciphers.add(new Def(
             1,
             "GOST2001-GOST89-GOST89",
@@ -4467,7 +4394,7 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_GOST94 | TLS1_PRF_GOST94 | TLS1_STREAM_MAC,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4483,12 +4410,12 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE,
             SSL_HANDSHAKE_MAC_GOST94 | TLS1_PRF_GOST94,
             0,
-            0,
+            0
             ));
            Ciphers.add(new Def(
             1,
             "GOST2012-GOST8912-GOST8912",
-            NULL,
+            null,
             0x0300ff85,
             SSL_kGOST,
             SSL_aGOST12 | SSL_aGOST01,
@@ -4499,12 +4426,12 @@ struct ssl_cipher_st {
             SSL_HIGH,
             SSL_HANDSHAKE_MAC_GOST12_256 | TLS1_PRF_GOST12_256 | TLS1_STREAM_MAC,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
             "GOST2012-NULL-GOST12",
-            NULL,
+            null,
             0x0300ff87,
             SSL_kGOST,
             SSL_aGOST12 | SSL_aGOST01,
@@ -4515,11 +4442,11 @@ struct ssl_cipher_st {
             SSL_STRONG_NONE,
             SSL_HANDSHAKE_MAC_GOST12_256 | TLS1_PRF_GOST12_256 | TLS1_STREAM_MAC,
             0,
-            0,
+            0
             ));
-       #endif                          /* OPENSSL_NO_GOST */
+       //#endif                          /* OPENSSL_NO_GOST */
 
-       #ifndef OPENSSL_NO_IDEA
+       //#ifndef OPENSSL_NO_IDEA
            Ciphers.add(new Def(
             1,
             SSL3_TXT_RSA_IDEA_128_SHA,
@@ -4534,11 +4461,11 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
-       #endif
+       //#endif
 
-       #ifndef OPENSSL_NO_SEED
+       //#ifndef OPENSSL_NO_SEED
            Ciphers.add(new Def(
             1,
             TLS1_TXT_RSA_WITH_SEED_SHA,
@@ -4553,7 +4480,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4569,7 +4496,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4585,7 +4512,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4601,11 +4528,11 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
-       #endif                          /* OPENSSL_NO_SEED */
+       //#endif                          /* OPENSSL_NO_SEED */
 
-       #ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+       //#ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
            Ciphers.add(new Def(
             1,
             SSL3_TXT_RSA_RC4_128_MD5,
@@ -4620,7 +4547,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4636,7 +4563,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4652,7 +4579,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4668,7 +4595,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4684,7 +4611,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4700,7 +4627,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4716,7 +4643,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4732,7 +4659,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4748,7 +4675,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4764,11 +4691,11 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_MEDIUM,
             SSL_HANDSHAKE_MAC_DEFAULT | TLS1_PRF,
             128,
-            128,
+            128
             ));
-       #endif                          /* OPENSSL_NO_WEAK_SSL_CIPHERS */
+       //#endif                          /* OPENSSL_NO_WEAK_SSL_CIPHERS */
 
-       #ifndef OPENSSL_NO_ARIA
+       //#ifndef OPENSSL_NO_ARIA
            Ciphers.add(new Def(
             1,
             TLS1_TXT_RSA_WITH_ARIA_128_GCM_SHA256,
@@ -4783,7 +4710,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4799,7 +4726,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4815,7 +4742,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4831,7 +4758,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4847,7 +4774,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4863,7 +4790,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4879,7 +4806,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4895,7 +4822,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4911,7 +4838,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4927,7 +4854,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4943,7 +4870,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4959,7 +4886,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -4975,7 +4902,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -4991,7 +4918,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
            Ciphers.add(new Def(
             1,
@@ -5007,7 +4934,7 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
             128,
-            128,
+            128
             ));
            Ciphers.add(new Def(
             1,
@@ -5023,1022 +4950,1022 @@ struct ssl_cipher_st {
             SSL_NOT_DEFAULT | SSL_HIGH,
             SSL_HANDSHAKE_MAC_SHA384 | TLS1_PRF_SHA384,
             256,
-            256,
+            256
             ));
 
-        /* Cipher 01 */
-        
-        
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_NULL_MD5,
-                            SSL3_CK_RSA_NULL_MD5,
-                            SSL_kRSA|SSL_aRSA|SSL_eNULL |SSL_MD5|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_STRONG_NONE,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 02 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_NULL_SHA,
-                            SSL3_CK_RSA_NULL_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_eNULL |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_STRONG_NONE,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 03 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_RC4_40_MD5,
-                            SSL3_CK_RSA_RC4_40_MD5,
-                            SSL_kRSA|SSL_aRSA|SSL_RC4  |SSL_MD5 |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 04 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_RC4_128_MD5,
-                            SSL3_CK_RSA_RC4_128_MD5,
-                            SSL_kRSA|SSL_aRSA|SSL_RC4  |SSL_MD5|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 05 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_RC4_128_SHA,
-                            SSL3_CK_RSA_RC4_128_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_RC4  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 06 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_RC2_40_MD5,
-                            SSL3_CK_RSA_RC2_40_MD5,
-                            SSL_kRSA|SSL_aRSA|SSL_RC2  |SSL_MD5 |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 07 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_IDEA_128_SHA,
-                            SSL3_CK_RSA_IDEA_128_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_IDEA |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 08 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_DES_40_CBC_SHA,
-                            SSL3_CK_RSA_DES_40_CBC_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_DES|SSL_SHA1|SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 09 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_DES_64_CBC_SHA,
-                            SSL3_CK_RSA_DES_64_CBC_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_DES  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 0A */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_RSA_DES_192_CBC3_SHA,
-                            SSL3_CK_RSA_DES_192_CBC3_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_3DES |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* The DH ciphers */
-        /* Cipher 0B */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_DH_DSS_DES_40_CBC_SHA,
-                            SSL3_CK_DH_DSS_DES_40_CBC_SHA,
-                            SSL_kDHd |SSL_aDH|SSL_DES|SSL_SHA1|SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 0C */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_DH_DSS_DES_64_CBC_SHA,
-                            SSL3_CK_DH_DSS_DES_64_CBC_SHA,
-                            SSL_kDHd |SSL_aDH|SSL_DES  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 0D */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_DH_DSS_DES_192_CBC3_SHA,
-                            SSL3_CK_DH_DSS_DES_192_CBC3_SHA,
-                            SSL_kDHd |SSL_aDH|SSL_3DES |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 0E */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_DH_RSA_DES_40_CBC_SHA,
-                            SSL3_CK_DH_RSA_DES_40_CBC_SHA,
-                            SSL_kDHr |SSL_aDH|SSL_DES|SSL_SHA1|SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 0F */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_DH_RSA_DES_64_CBC_SHA,
-                            SSL3_CK_DH_RSA_DES_64_CBC_SHA,
-                            SSL_kDHr |SSL_aDH|SSL_DES  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 10 */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_DH_RSA_DES_192_CBC3_SHA,
-                            SSL3_CK_DH_RSA_DES_192_CBC3_SHA,
-                            SSL_kDHr |SSL_aDH|SSL_3DES |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* The Ephemeral DH ciphers */
-        /* Cipher 11 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_EDH_DSS_DES_40_CBC_SHA,
-                            SSL3_CK_EDH_DSS_DES_40_CBC_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_DES|SSL_SHA1|SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 12 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_EDH_DSS_DES_64_CBC_SHA,
-                            SSL3_CK_EDH_DSS_DES_64_CBC_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_DES  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 13 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_EDH_DSS_DES_192_CBC3_SHA,
-                            SSL3_CK_EDH_DSS_DES_192_CBC3_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_3DES |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 14 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_EDH_RSA_DES_40_CBC_SHA,
-                            SSL3_CK_EDH_RSA_DES_40_CBC_SHA,
-                            SSL_kEDH|SSL_aRSA|SSL_DES|SSL_SHA1|SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 15 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_EDH_RSA_DES_64_CBC_SHA,
-                            SSL3_CK_EDH_RSA_DES_64_CBC_SHA,
-                            SSL_kEDH|SSL_aRSA|SSL_DES  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 16 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_EDH_RSA_DES_192_CBC3_SHA,
-                            SSL3_CK_EDH_RSA_DES_192_CBC3_SHA,
-                            SSL_kEDH|SSL_aRSA|SSL_3DES |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 17 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_ADH_RC4_40_MD5,
-                            SSL3_CK_ADH_RC4_40_MD5,
-                            SSL_kEDH |SSL_aNULL|SSL_RC4  |SSL_MD5 |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 18 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_ADH_RC4_128_MD5,
-                            SSL3_CK_ADH_RC4_128_MD5,
-                            SSL_kEDH |SSL_aNULL|SSL_RC4  |SSL_MD5 |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 19 */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_ADH_DES_40_CBC_SHA,
-                            SSL3_CK_ADH_DES_40_CBC_SHA,
-                            SSL_kEDH |SSL_aNULL|SSL_DES|SSL_SHA1|SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 1A */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_ADH_DES_64_CBC_SHA,
-                            SSL3_CK_ADH_DES_64_CBC_SHA,
-                            SSL_kEDH |SSL_aNULL|SSL_DES  |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 1B */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_ADH_DES_192_CBC_SHA,
-                            SSL3_CK_ADH_DES_192_CBC_SHA,
-                            SSL_kEDH |SSL_aNULL|SSL_3DES |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Fortezza */
-        /* Cipher 1C */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_FZA_DMS_NULL_SHA,
-                            SSL3_CK_FZA_DMS_NULL_SHA,
-                            SSL_kFZA|SSL_aFZA |SSL_eNULL |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_STRONG_NONE,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 1D */
-        Ciphers.add(new Def(
-                            0,
-                            SSL3_TXT_FZA_DMS_FZA_SHA,
-                            SSL3_CK_FZA_DMS_FZA_SHA,
-                            SSL_kFZA|SSL_aFZA |SSL_eFZA |SSL_SHA1|SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_STRONG_NONE,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 1E VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_DES_64_CBC_SHA,
-                            SSL3_CK_KRB5_DES_64_CBC_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_SHA1   |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 1F VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_DES_192_CBC3_SHA,
-                            SSL3_CK_KRB5_DES_192_CBC3_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_3DES|SSL_SHA1  |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            112,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 20 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_RC4_128_SHA,
-                            SSL3_CK_KRB5_RC4_128_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_SHA1  |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 21 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_IDEA_128_CBC_SHA,
-                            SSL3_CK_KRB5_IDEA_128_CBC_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_IDEA|SSL_SHA1  |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 22 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_DES_64_CBC_MD5,
-                            SSL3_CK_KRB5_DES_64_CBC_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_MD5    |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_LOW,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 23 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_DES_192_CBC3_MD5,
-                            SSL3_CK_KRB5_DES_192_CBC3_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_3DES|SSL_MD5   |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            112,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 24 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_RC4_128_MD5,
-                            SSL3_CK_KRB5_RC4_128_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_MD5  |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 25 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_IDEA_128_CBC_MD5,
-                            SSL3_CK_KRB5_IDEA_128_CBC_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_IDEA|SSL_MD5  |SSL_SSLV3,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 26 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_DES_40_CBC_SHA,
-                            SSL3_CK_KRB5_DES_40_CBC_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_SHA1   |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 27 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_RC2_40_CBC_SHA,
-                            SSL3_CK_KRB5_RC2_40_CBC_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_RC2|SSL_SHA1   |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 28 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_RC4_40_SHA,
-                            SSL3_CK_KRB5_RC4_40_SHA,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_SHA1   |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 29 VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_DES_40_CBC_MD5,
-                            SSL3_CK_KRB5_DES_40_CBC_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_MD5    |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 2A VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_RC2_40_CBC_MD5,
-                            SSL3_CK_KRB5_RC2_40_CBC_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_RC2|SSL_MD5    |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            40,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 2B VRS */
-        Ciphers.add(new Def(
-                            1,
-                            SSL3_TXT_KRB5_RC4_40_MD5,
-                            SSL3_CK_KRB5_RC4_40_MD5,
-                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_MD5    |SSL_SSLV3,
-                            SSL_EXPORT|SSL_EXP40,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 2F */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_RSA_WITH_AES_128_SHA,
-                            TLS1_CK_RSA_WITH_AES_128_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_AES|SSL_SHA |SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 30 */
-        Ciphers.add(new Def(
-                            0,
-                            TLS1_TXT_DH_DSS_WITH_AES_128_SHA,
-                            TLS1_CK_DH_DSS_WITH_AES_128_SHA,
-                            SSL_kDHd|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 31 */
-        Ciphers.add(new Def(
-                            0,
-                            TLS1_TXT_DH_RSA_WITH_AES_128_SHA,
-                            TLS1_CK_DH_RSA_WITH_AES_128_SHA,
-                            SSL_kDHr|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 32 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_DSS_WITH_AES_128_SHA,
-                            TLS1_CK_DHE_DSS_WITH_AES_128_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 33 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_RSA_WITH_AES_128_SHA,
-                            TLS1_CK_DHE_RSA_WITH_AES_128_SHA,
-                            SSL_kEDH|SSL_aRSA|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 34 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ADH_WITH_AES_128_SHA,
-                            TLS1_CK_ADH_WITH_AES_128_SHA,
-                            SSL_kEDH|SSL_aNULL|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher 35 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_RSA_WITH_AES_256_SHA,
-                            TLS1_CK_RSA_WITH_AES_256_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_AES|SSL_SHA |SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            256,
-                            256,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 36 */
-        Ciphers.add(new Def(
-                            0,
-                            TLS1_TXT_DH_DSS_WITH_AES_256_SHA,
-                            TLS1_CK_DH_DSS_WITH_AES_256_SHA,
-                            SSL_kDHd|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            256,
-                            256,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 37 */
-        Ciphers.add(new Def(
-                            0,
-                            TLS1_TXT_DH_RSA_WITH_AES_256_SHA,
-                            TLS1_CK_DH_RSA_WITH_AES_256_SHA,
-                            SSL_kDHr|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            256,
-                            256,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 38 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_DSS_WITH_AES_256_SHA,
-                            TLS1_CK_DHE_DSS_WITH_AES_256_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            256,
-                            256,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 39 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_RSA_WITH_AES_256_SHA,
-                            TLS1_CK_DHE_RSA_WITH_AES_256_SHA,
-                            SSL_kEDH|SSL_aRSA|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            256,
-                            256,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 3A */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ADH_WITH_AES_256_SHA,
-                            TLS1_CK_ADH_WITH_AES_256_SHA,
-                            SSL_kEDH|SSL_aNULL|SSL_AES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            256,
-                            256,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* New TLS Export CipherSuites */
-        /* Cipher 60 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_MD5,
-                            TLS1_CK_RSA_EXPORT1024_WITH_RC4_56_MD5,
-                            SSL_kRSA|SSL_aRSA|SSL_RC4|SSL_MD5|SSL_TLSV1,
-                            SSL_EXPORT|SSL_EXP56,
-                            0,
-                            56,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 61 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5,
-                            TLS1_CK_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5,
-                            SSL_kRSA|SSL_aRSA|SSL_RC2|SSL_MD5|SSL_TLSV1,
-                            SSL_EXPORT|SSL_EXP56,
-                            0,
-                            56,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 62 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_RSA_EXPORT1024_WITH_DES_CBC_SHA,
-                            TLS1_CK_RSA_EXPORT1024_WITH_DES_CBC_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_DES|SSL_SHA|SSL_TLSV1,
-                            SSL_EXPORT|SSL_EXP56,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 63 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA,
-                            TLS1_CK_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_DES|SSL_SHA|SSL_TLSV1,
-                            SSL_EXPORT|SSL_EXP56,
-                            0,
-                            56,
-                            56,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 64 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_SHA,
-                            TLS1_CK_RSA_EXPORT1024_WITH_RC4_56_SHA,
-                            SSL_kRSA|SSL_aRSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_EXPORT|SSL_EXP56,
-                            0,
-                            56,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 65 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA,
-                            TLS1_CK_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_EXPORT|SSL_EXP56,
-                            0,
-                            56,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher 66 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA,
-                            TLS1_CK_DHE_DSS_WITH_RC4_128_SHA,
-                            SSL_kEDH|SSL_aDSS|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_MEDIUM,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-        /* Cipher C001 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA,
-                            TLS1_CK_ECDH_ECDSA_WITH_NULL_SHA,
-                            SSL_kECDH|SSL_aECDSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C002 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA,
-                            TLS1_CK_ECDH_ECDSA_WITH_RC4_128_SHA,
-                            SSL_kECDH|SSL_aECDSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C003 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA,
-                            TLS1_CK_ECDH_ECDSA_WITH_DES_192_CBC3_SHA,
-                            SSL_kECDH|SSL_aECDSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C006 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA,
-                            TLS1_CK_ECDHE_ECDSA_WITH_NULL_SHA,
-                            SSL_kECDHE|SSL_aECDSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C007 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                            TLS1_CK_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                            SSL_kECDHE|SSL_aECDSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C008 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
-                            TLS1_CK_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
-                            SSL_kECDHE|SSL_aECDSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C00B */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_RSA_WITH_NULL_SHA,
-                            TLS1_CK_ECDH_RSA_WITH_NULL_SHA,
-                            SSL_kECDH|SSL_aRSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C00C */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA,
-                            TLS1_CK_ECDH_RSA_WITH_RC4_128_SHA,
-                            SSL_kECDH|SSL_aRSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C00D */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA,
-                            TLS1_CK_ECDH_RSA_WITH_DES_192_CBC3_SHA,
-                            SSL_kECDH|SSL_aRSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C010 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA,
-                            TLS1_CK_ECDHE_RSA_WITH_NULL_SHA,
-                            SSL_kECDHE|SSL_aRSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C011 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA,
-                            TLS1_CK_ECDHE_RSA_WITH_RC4_128_SHA,
-                            SSL_kECDHE|SSL_aRSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            128,
-                            128,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C012 */
-	    Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
-                            TLS1_CK_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
-                            SSL_kECDHE|SSL_aRSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP|SSL_HIGH,
-                            0,
-                            168,
-                            168,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
-
-        /* Cipher C015 */
-        Ciphers.add(new Def(
-                            1,
-                            TLS1_TXT_ECDH_anon_WITH_NULL_SHA,
-                            TLS1_CK_ECDH_anon_WITH_NULL_SHA,
-                            SSL_kECDHE|SSL_aNULL|SSL_eNULL|SSL_SHA|SSL_TLSV1,
-                            SSL_NOT_EXP,
-                            0,
-                            0,
-                            0,
-                            SSL_ALL_CIPHERS,
-                            SSL_ALL_STRENGTHS
-                            ));
+//        /* Cipher 01 */
+//        
+//        
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_NULL_MD5,
+//                            SSL3_CK_RSA_NULL_MD5,
+//                            SSL_kRSA|SSL_aRSA|SSL_eNULL |SSL_MD5|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_STRONG_NONE,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 02 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_NULL_SHA,
+//                            SSL3_CK_RSA_NULL_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_eNULL |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_STRONG_NONE,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 03 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_RC4_40_MD5,
+//                            SSL3_CK_RSA_RC4_40_MD5,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC4  |SSL_MD5 |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 04 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_RC4_128_MD5,
+//                            SSL3_CK_RSA_RC4_128_MD5,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC4  |SSL_MD5|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 05 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_RC4_128_SHA,
+//                            SSL3_CK_RSA_RC4_128_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC4  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 06 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_RC2_40_MD5,
+//                            SSL3_CK_RSA_RC2_40_MD5,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC2  |SSL_MD5 |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 07 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_IDEA_128_SHA,
+//                            SSL3_CK_RSA_IDEA_128_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_IDEA |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 08 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_DES_40_CBC_SHA,
+//                            SSL3_CK_RSA_DES_40_CBC_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_DES|SSL_SHA1|SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 09 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_DES_64_CBC_SHA,
+//                            SSL3_CK_RSA_DES_64_CBC_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_DES  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 0A */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_RSA_DES_192_CBC3_SHA,
+//                            SSL3_CK_RSA_DES_192_CBC3_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_3DES |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* The DH ciphers */
+//        /* Cipher 0B */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_DH_DSS_DES_40_CBC_SHA,
+//                            SSL3_CK_DH_DSS_DES_40_CBC_SHA,
+//                            SSL_kDHd |SSL_aDH|SSL_DES|SSL_SHA1|SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 0C */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_DH_DSS_DES_64_CBC_SHA,
+//                            SSL3_CK_DH_DSS_DES_64_CBC_SHA,
+//                            SSL_kDHd |SSL_aDH|SSL_DES  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 0D */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_DH_DSS_DES_192_CBC3_SHA,
+//                            SSL3_CK_DH_DSS_DES_192_CBC3_SHA,
+//                            SSL_kDHd |SSL_aDH|SSL_3DES |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 0E */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_DH_RSA_DES_40_CBC_SHA,
+//                            SSL3_CK_DH_RSA_DES_40_CBC_SHA,
+//                            SSL_kDHr |SSL_aDH|SSL_DES|SSL_SHA1|SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 0F */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_DH_RSA_DES_64_CBC_SHA,
+//                            SSL3_CK_DH_RSA_DES_64_CBC_SHA,
+//                            SSL_kDHr |SSL_aDH|SSL_DES  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 10 */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_DH_RSA_DES_192_CBC3_SHA,
+//                            SSL3_CK_DH_RSA_DES_192_CBC3_SHA,
+//                            SSL_kDHr |SSL_aDH|SSL_3DES |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* The Ephemeral DH ciphers */
+//        /* Cipher 11 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_EDH_DSS_DES_40_CBC_SHA,
+//                            SSL3_CK_EDH_DSS_DES_40_CBC_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_DES|SSL_SHA1|SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 12 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_EDH_DSS_DES_64_CBC_SHA,
+//                            SSL3_CK_EDH_DSS_DES_64_CBC_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_DES  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 13 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_EDH_DSS_DES_192_CBC3_SHA,
+//                            SSL3_CK_EDH_DSS_DES_192_CBC3_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_3DES |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 14 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_EDH_RSA_DES_40_CBC_SHA,
+//                            SSL3_CK_EDH_RSA_DES_40_CBC_SHA,
+//                            SSL_kEDH|SSL_aRSA|SSL_DES|SSL_SHA1|SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 15 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_EDH_RSA_DES_64_CBC_SHA,
+//                            SSL3_CK_EDH_RSA_DES_64_CBC_SHA,
+//                            SSL_kEDH|SSL_aRSA|SSL_DES  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 16 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_EDH_RSA_DES_192_CBC3_SHA,
+//                            SSL3_CK_EDH_RSA_DES_192_CBC3_SHA,
+//                            SSL_kEDH|SSL_aRSA|SSL_3DES |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 17 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_ADH_RC4_40_MD5,
+//                            SSL3_CK_ADH_RC4_40_MD5,
+//                            SSL_kEDH |SSL_aNULL|SSL_RC4  |SSL_MD5 |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 18 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_ADH_RC4_128_MD5,
+//                            SSL3_CK_ADH_RC4_128_MD5,
+//                            SSL_kEDH |SSL_aNULL|SSL_RC4  |SSL_MD5 |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 19 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_ADH_DES_40_CBC_SHA,
+//                            SSL3_CK_ADH_DES_40_CBC_SHA,
+//                            SSL_kEDH |SSL_aNULL|SSL_DES|SSL_SHA1|SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 1A */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_ADH_DES_64_CBC_SHA,
+//                            SSL3_CK_ADH_DES_64_CBC_SHA,
+//                            SSL_kEDH |SSL_aNULL|SSL_DES  |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 1B */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_ADH_DES_192_CBC_SHA,
+//                            SSL3_CK_ADH_DES_192_CBC_SHA,
+//                            SSL_kEDH |SSL_aNULL|SSL_3DES |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Fortezza */
+//        /* Cipher 1C */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_FZA_DMS_NULL_SHA,
+//                            SSL3_CK_FZA_DMS_NULL_SHA,
+//                            SSL_kFZA|SSL_aFZA |SSL_eNULL |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_STRONG_NONE,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 1D */
+//        Ciphers.add(new Def(
+//                            0,
+//                            SSL3_TXT_FZA_DMS_FZA_SHA,
+//                            SSL3_CK_FZA_DMS_FZA_SHA,
+//                            SSL_kFZA|SSL_aFZA |SSL_eFZA |SSL_SHA1|SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_STRONG_NONE,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 1E VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_DES_64_CBC_SHA,
+//                            SSL3_CK_KRB5_DES_64_CBC_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_SHA1   |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 1F VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_DES_192_CBC3_SHA,
+//                            SSL3_CK_KRB5_DES_192_CBC3_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_3DES|SSL_SHA1  |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            112,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 20 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_RC4_128_SHA,
+//                            SSL3_CK_KRB5_RC4_128_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_SHA1  |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 21 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_IDEA_128_CBC_SHA,
+//                            SSL3_CK_KRB5_IDEA_128_CBC_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_IDEA|SSL_SHA1  |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 22 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_DES_64_CBC_MD5,
+//                            SSL3_CK_KRB5_DES_64_CBC_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_MD5    |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_LOW,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 23 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_DES_192_CBC3_MD5,
+//                            SSL3_CK_KRB5_DES_192_CBC3_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_3DES|SSL_MD5   |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            112,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 24 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_RC4_128_MD5,
+//                            SSL3_CK_KRB5_RC4_128_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_MD5  |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 25 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_IDEA_128_CBC_MD5,
+//                            SSL3_CK_KRB5_IDEA_128_CBC_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_IDEA|SSL_MD5  |SSL_SSLV3,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 26 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_DES_40_CBC_SHA,
+//                            SSL3_CK_KRB5_DES_40_CBC_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_SHA1   |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 27 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_RC2_40_CBC_SHA,
+//                            SSL3_CK_KRB5_RC2_40_CBC_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_RC2|SSL_SHA1   |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 28 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_RC4_40_SHA,
+//                            SSL3_CK_KRB5_RC4_40_SHA,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_SHA1   |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 29 VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_DES_40_CBC_MD5,
+//                            SSL3_CK_KRB5_DES_40_CBC_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_DES|SSL_MD5    |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 2A VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_RC2_40_CBC_MD5,
+//                            SSL3_CK_KRB5_RC2_40_CBC_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_RC2|SSL_MD5    |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            40,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 2B VRS */
+//        Ciphers.add(new Def(
+//                            1,
+//                            SSL3_TXT_KRB5_RC4_40_MD5,
+//                            SSL3_CK_KRB5_RC4_40_MD5,
+//                            SSL_kKRB5|SSL_aKRB5|  SSL_RC4|SSL_MD5    |SSL_SSLV3,
+//                            SSL_EXPORT|SSL_EXP40,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 2F */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_RSA_WITH_AES_128_SHA,
+//                            TLS1_CK_RSA_WITH_AES_128_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_AES|SSL_SHA |SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 30 */
+//        Ciphers.add(new Def(
+//                            0,
+//                            TLS1_TXT_DH_DSS_WITH_AES_128_SHA,
+//                            TLS1_CK_DH_DSS_WITH_AES_128_SHA,
+//                            SSL_kDHd|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 31 */
+//        Ciphers.add(new Def(
+//                            0,
+//                            TLS1_TXT_DH_RSA_WITH_AES_128_SHA,
+//                            TLS1_CK_DH_RSA_WITH_AES_128_SHA,
+//                            SSL_kDHr|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 32 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_DSS_WITH_AES_128_SHA,
+//                            TLS1_CK_DHE_DSS_WITH_AES_128_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 33 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_RSA_WITH_AES_128_SHA,
+//                            TLS1_CK_DHE_RSA_WITH_AES_128_SHA,
+//                            SSL_kEDH|SSL_aRSA|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 34 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ADH_WITH_AES_128_SHA,
+//                            TLS1_CK_ADH_WITH_AES_128_SHA,
+//                            SSL_kEDH|SSL_aNULL|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher 35 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_RSA_WITH_AES_256_SHA,
+//                            TLS1_CK_RSA_WITH_AES_256_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_AES|SSL_SHA |SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            256,
+//                            256,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 36 */
+//        Ciphers.add(new Def(
+//                            0,
+//                            TLS1_TXT_DH_DSS_WITH_AES_256_SHA,
+//                            TLS1_CK_DH_DSS_WITH_AES_256_SHA,
+//                            SSL_kDHd|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            256,
+//                            256,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 37 */
+//        Ciphers.add(new Def(
+//                            0,
+//                            TLS1_TXT_DH_RSA_WITH_AES_256_SHA,
+//                            TLS1_CK_DH_RSA_WITH_AES_256_SHA,
+//                            SSL_kDHr|SSL_aDH|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            256,
+//                            256,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 38 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_DSS_WITH_AES_256_SHA,
+//                            TLS1_CK_DHE_DSS_WITH_AES_256_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            256,
+//                            256,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 39 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_RSA_WITH_AES_256_SHA,
+//                            TLS1_CK_DHE_RSA_WITH_AES_256_SHA,
+//                            SSL_kEDH|SSL_aRSA|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            256,
+//                            256,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 3A */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ADH_WITH_AES_256_SHA,
+//                            TLS1_CK_ADH_WITH_AES_256_SHA,
+//                            SSL_kEDH|SSL_aNULL|SSL_AES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            256,
+//                            256,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* New TLS Export CipherSuites */
+//        /* Cipher 60 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_MD5,
+//                            TLS1_CK_RSA_EXPORT1024_WITH_RC4_56_MD5,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC4|SSL_MD5|SSL_TLSV1,
+//                            SSL_EXPORT|SSL_EXP56,
+//                            0,
+//                            56,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 61 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5,
+//                            TLS1_CK_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC2|SSL_MD5|SSL_TLSV1,
+//                            SSL_EXPORT|SSL_EXP56,
+//                            0,
+//                            56,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 62 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_RSA_EXPORT1024_WITH_DES_CBC_SHA,
+//                            TLS1_CK_RSA_EXPORT1024_WITH_DES_CBC_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_DES|SSL_SHA|SSL_TLSV1,
+//                            SSL_EXPORT|SSL_EXP56,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 63 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA,
+//                            TLS1_CK_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_DES|SSL_SHA|SSL_TLSV1,
+//                            SSL_EXPORT|SSL_EXP56,
+//                            0,
+//                            56,
+//                            56,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 64 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_SHA,
+//                            TLS1_CK_RSA_EXPORT1024_WITH_RC4_56_SHA,
+//                            SSL_kRSA|SSL_aRSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_EXPORT|SSL_EXP56,
+//                            0,
+//                            56,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 65 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA,
+//                            TLS1_CK_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_EXPORT|SSL_EXP56,
+//                            0,
+//                            56,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher 66 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA,
+//                            TLS1_CK_DHE_DSS_WITH_RC4_128_SHA,
+//                            SSL_kEDH|SSL_aDSS|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_MEDIUM,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//        /* Cipher C001 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA,
+//                            TLS1_CK_ECDH_ECDSA_WITH_NULL_SHA,
+//                            SSL_kECDH|SSL_aECDSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C002 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA,
+//                            TLS1_CK_ECDH_ECDSA_WITH_RC4_128_SHA,
+//                            SSL_kECDH|SSL_aECDSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C003 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA,
+//                            TLS1_CK_ECDH_ECDSA_WITH_DES_192_CBC3_SHA,
+//                            SSL_kECDH|SSL_aECDSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C006 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA,
+//                            TLS1_CK_ECDHE_ECDSA_WITH_NULL_SHA,
+//                            SSL_kECDHE|SSL_aECDSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C007 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA,
+//                            TLS1_CK_ECDHE_ECDSA_WITH_RC4_128_SHA,
+//                            SSL_kECDHE|SSL_aECDSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C008 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
+//                            TLS1_CK_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA,
+//                            SSL_kECDHE|SSL_aECDSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C00B */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_RSA_WITH_NULL_SHA,
+//                            TLS1_CK_ECDH_RSA_WITH_NULL_SHA,
+//                            SSL_kECDH|SSL_aRSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C00C */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA,
+//                            TLS1_CK_ECDH_RSA_WITH_RC4_128_SHA,
+//                            SSL_kECDH|SSL_aRSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C00D */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA,
+//                            TLS1_CK_ECDH_RSA_WITH_DES_192_CBC3_SHA,
+//                            SSL_kECDH|SSL_aRSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C010 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA,
+//                            TLS1_CK_ECDHE_RSA_WITH_NULL_SHA,
+//                            SSL_kECDHE|SSL_aRSA|SSL_eNULL|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C011 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA,
+//                            TLS1_CK_ECDHE_RSA_WITH_RC4_128_SHA,
+//                            SSL_kECDHE|SSL_aRSA|SSL_RC4|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            128,
+//                            128,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C012 */
+//	    Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
+//                            TLS1_CK_ECDHE_RSA_WITH_DES_192_CBC3_SHA,
+//                            SSL_kECDHE|SSL_aRSA|SSL_3DES|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP|SSL_HIGH,
+//                            0,
+//                            168,
+//                            168,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
+//
+//        /* Cipher C015 */
+//        Ciphers.add(new Def(
+//                            1,
+//                            TLS1_TXT_ECDH_anon_WITH_NULL_SHA,
+//                            TLS1_CK_ECDH_anon_WITH_NULL_SHA,
+//                            SSL_kECDHE|SSL_aNULL|SSL_eNULL|SSL_SHA|SSL_TLSV1,
+//                            SSL_NOT_EXP,
+//                            0,
+//                            0,
+//                            0,
+//                            SSL_ALL_CIPHERS,
+//                            SSL_ALL_STRENGTHS
+//                            ));
 
         String name;
         CipherNames = new HashMap<String, Def>(Ciphers.size() + 64, 1);
