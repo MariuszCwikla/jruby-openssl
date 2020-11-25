@@ -189,7 +189,7 @@ class TestSSLContext < TestCase
     context.ciphers = "AES"
 
     actual = context.ciphers.map { |cipher| cipher[0]}
-    assert actual.include?("ECDHE-ECDSA-AES128-GCM-SHA256")
+    assert actual.include?("ECDHE-RSA-AES128-SHA")
     assert actual.include?("ECDHE-ECDSA-AES128-SHA")
     assert actual.include?("AES128-SHA")
   end
